@@ -53,15 +53,21 @@ class Availability_Manager {
         $slots = array();
         $timezone = new DateTimeZone('Europe/Warsaw');
         
-        $start_time = DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . ' ' . $rule->start_time, $timezone);
-        $end_time = DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . ' ' . $rule->end_time, $timezone);
+        // Remove seconds from time if present (format: HH:MM:SS -> HH:MM)
+        $start_time_str = substr($rule->start_time, 0, 5);
+        $end_time_str = substr($rule->end_time, 0, 5);
+        
+        $start_time = DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . ' ' . $start_time_str, $timezone);
+        $end_time = DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . ' ' . $end_time_str, $timezone);
         
         // Check if DateTime creation was successful
         if ($start_time === false || $end_time === false) {
             Booking_System_Logger::log_error('Failed to create DateTime for slot generation', array(
                 'date' => $date->format('Y-m-d'),
                 'start_time' => $rule->start_time,
-                'end_time' => $rule->end_time
+                'end_time' => $rule->end_time,
+                'start_time_str' => $start_time_str,
+                'end_time_str' => $end_time_str
             ));
             return $slots;
         }
