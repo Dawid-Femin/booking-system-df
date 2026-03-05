@@ -89,8 +89,10 @@ class Booking_System_Public {
             
             if ($result->is_success()) {
                 $data = $result->get_data();
-                wp_redirect($data['redirect_url']);
-                exit;
+                // Use JavaScript redirect instead of wp_redirect to avoid headers already sent error
+                echo '<script>window.location.href = "' . esc_js($data['redirect_url']) . '";</script>';
+                echo '<p>' . __('Przekierowywanie do płatności...', 'booking-system-df') . '</p>';
+                return;
             } else {
                 echo '<div class="booking-error">' . esc_html($result->get_error()) . '</div>';
             }

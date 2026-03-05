@@ -57,6 +57,7 @@ class Payment_Handler {
 
     public static function handle_payment_return($request) {
         $consultation_id = $request->get_param('consultation_id');
+        $dev_mode = $request->get_param('dev_mode');
         
         if (!$consultation_id) {
             wp_redirect(home_url());
@@ -67,6 +68,20 @@ class Payment_Handler {
         
         if (!$consultation) {
             wp_redirect(home_url());
+            exit;
+        }
+        
+        // Development mode - auto-complete payment
+        if ($dev_mode === '1') {
+            Booking_Engine::handle_payment_completed($consultation->payment_data->order_id);
+            
+            $redirect_url = add_query_arg(array(
+                'booking_status' => 'success',
+                'consultation_id' => $consultation_id,
+                'dev_mode' => '1'
+            ), home_url('/potwierdzenie-platnosci/'));
+            
+            wp_redirect($redirect_url);
             exit;
         }
         

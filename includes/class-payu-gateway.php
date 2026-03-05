@@ -91,6 +91,19 @@ class PayU_Gateway {
     }
 
     public function create_order($consultation_id, $amount, $currency, $description, $customer_email, $customer_name) {
+        // Development mode - skip PayU on localhost
+        if (defined('WP_DEBUG') && WP_DEBUG && (strpos(home_url(), 'localhost') !== false || strpos(home_url(), '.local') !== false)) {
+            Booking_System_Logger::log_info('PayU skipped - development mode', array(
+                'consultation_id' => $consultation_id,
+                'amount' => $amount
+            ));
+            
+            return Result::success(array(
+                'order_id' => 'DEV_ORDER_' . $consultation_id . '_' . time(),
+                'redirect_url' => home_url('/wp-json/booking-system-df/v1/payment-return?consultation_id=' . $consultation_id . '&dev_mode=1')
+            ));
+        }
+        
         try {
             $token = $this->get_access_token();
             

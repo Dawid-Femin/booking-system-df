@@ -24,7 +24,7 @@ class Booking_Engine {
         
         // Start transaction
         $wpdb->query('START TRANSACTION');
-        $wpdb->query('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
+        // Note: SERIALIZABLE isolation level removed for compatibility
         
         try {
             // Check slot availability (with lock)
