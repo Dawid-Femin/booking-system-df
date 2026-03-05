@@ -16,7 +16,60 @@ if (!defined('ABSPATH')) exit;
         
         <div class="form-group">
             <label><?php _e('Wybierz termin', 'booking-system-df'); ?> *</label>
-            <div id="booking-calendar-widget" data-type-id="<?php echo esc_attr($type_id); ?>"></div>
+            
+            <?php
+            // Generate available slots
+            $start_date = date('Y-m-d');
+            $end_date = date('Y-m-d', strtotime('+30 days'));
+            
+            $slots_result = Availability_Manager::get_available_slots($type_id, $start_date, $end_date);
+            $slots = $slots_result->is_success() ? $slots_result->get_data() : array();
+            ?>
+            
+            <div class="booking-calendar">
+                <?php if (empty($slots)): ?>
+                    <p class="booking-error"><?php _e('Brak dostępnych terminów w ciągu najbliższych 30 dni. Skontaktuj się z nami bezpośrednio.', 'booking-system-df'); ?></p>
+                <?php else: ?>
+                    <?php
+                    $polish_days = array(
+                        'Monday' => 'Poniedziałek',
+                        'Tuesday' => 'Wtorek',
+                        'Wednesday' => 'Środa',
+                        'Thursday' => 'Czwartek',
+                        'Friday' => 'Piątek',
+                        'Saturday' => 'Sobota',
+                        'Sunday' => 'Niedziela'
+                    );
+                    ?>
+                    <div class="booking-slots">
+                        <?php
+                        $current_date = '';
+                        foreach ($slots as $slot):
+                            $slot_date = $slot->start->format('Y-m-d');
+                            
+                            if ($slot_date !== $current_date):
+                                if ($current_date !== '') echo '</div></div>';
+                                $current_date = $slot_date;
+                                $day_name_en = $slot->start->format('l');
+                                $day_name_pl = isset($polish_days[$day_name_en]) ? $polish_days[$day_name_en] : $day_name_en;
+                                ?>
+                                <div class="booking-day">
+                                    <h4><?php echo esc_html($day_name_pl . ', ' . $slot->start->format('d.m.Y')); ?></h4>
+                                    <div class="booking-day-slots">
+                            <?php endif; ?>
+                            
+                            <button type="button" class="booking-slot-button" 
+                                    data-start="<?php echo esc_attr($slot->get_start_formatted()); ?>"
+                                    data-end="<?php echo esc_attr($slot->get_end_formatted()); ?>">
+                                <?php echo esc_html($slot->get_start_time()); ?>
+                            </button>
+                            
+                        <?php endforeach; ?>
+                        </div></div>
+                    </div>
+                <?php endif; ?>
+            </div>
+            
             <input type="hidden" name="start_datetime" id="start_datetime" required>
             <input type="hidden" name="end_datetime" id="end_datetime" required>
         </div>
