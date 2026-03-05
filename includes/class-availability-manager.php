@@ -56,6 +56,16 @@ class Availability_Manager {
         $start_time = DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . ' ' . $rule->start_time, $timezone);
         $end_time = DateTime::createFromFormat('Y-m-d H:i', $date->format('Y-m-d') . ' ' . $rule->end_time, $timezone);
         
+        // Check if DateTime creation was successful
+        if ($start_time === false || $end_time === false) {
+            Booking_System_Logger::log_error('Failed to create DateTime for slot generation', array(
+                'date' => $date->format('Y-m-d'),
+                'start_time' => $rule->start_time,
+                'end_time' => $rule->end_time
+            ));
+            return $slots;
+        }
+        
         $current = clone $start_time;
         
         while ($current < $end_time) {
