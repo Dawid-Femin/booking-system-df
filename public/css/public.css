@@ -1,0 +1,117 @@
+/* Public styles */
+.booking-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.booking-form .form-group {
+    margin-bottom: 20px;
+}
+
+.booking-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.booking-form input[type="text"],
+.booking-form input[type="email"],
+.booking-form input[type="tel"],
+.booking-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.booking-form textarea {
+    resize: vertical;
+}
+
+.booking-form button[type="submit"] {
+    background: #3498db;
+    color: #fff;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.booking-form button[type="submit"]:hover {
+    background: #2980b9;
+}
+
+.booking-calendar {
+    margin: 20px 0;
+}
+
+.booking-day {
+    margin-bottom: 30px;
+}
+
+.booking-day h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.booking-day-slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.booking-slot-button {
+    padding: 10px 20px;
+    background: #fff;
+    border: 2px solid #3498db;
+    color: #3498db;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.booking-slot-button:hover,
+.booking-slot-button.selected {
+    background: #3498db;
+    color: #fff;
+}
+
+.booking-error {
+    background: #e74c3c;
+    color: #fff;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.booking-price {
+    font-size: 18px;
+    color: #2ecc71;
+}
+
+.consultation-card {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.consultation-card h3 {
+    margin-top: 0;
+}
+
+.consultation-card .button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #2ecc71;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.consultation-card .button:hover {
+    background: #27ae60;
+}
