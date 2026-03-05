@@ -133,7 +133,14 @@ class PayU_Gateway {
                 throw new Booking_Payment_Error('Nie udało się utworzyć zamówienia w PayU.');
             }
 
+            $response_code = wp_remote_retrieve_response_code($response);
             $body = json_decode(wp_remote_retrieve_body($response), true);
+            
+            Booking_System_Logger::log_info('PayU create order response', array(
+                'code' => $response_code,
+                'body' => $body,
+                'order_data' => $order_data
+            ));
             
             if (!isset($body['orderId']) || !isset($body['redirectUri'])) {
                 Booking_System_Logger::log_error('PayU create order response invalid', array('response' => $body));
