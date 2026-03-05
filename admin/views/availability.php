@@ -37,6 +37,10 @@ $blocked = Blocked_Period::get_all();
                 <th><label><?php _e('Do godziny', 'booking-system-df'); ?></label></th>
                 <td><input type="time" name="end_time" required></td>
             </tr>
+            <tr>
+                <th><label><?php _e('Aktywna', 'booking-system-df'); ?></label></th>
+                <td><input type="checkbox" name="is_active" value="1" checked></td>
+            </tr>
         </table>
         <p><input type="submit" name="save_rule" class="button button-primary" value="<?php _e('Dodaj regułę', 'booking-system-df'); ?>"></p>
     </form>
@@ -49,12 +53,28 @@ $blocked = Blocked_Period::get_all();
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($rules as $rule): ?>
+            <?php if (empty($rules)): ?>
                 <tr>
-                    <td><?php echo esc_html($rule->day_of_week); ?></td>
-                    <td><?php echo esc_html($rule->start_time . ' - ' . $rule->end_time); ?></td>
+                    <td colspan="2"><?php _e('Brak reguł dostępności. Dodaj pierwszą regułę powyżej.', 'booking-system-df'); ?></td>
                 </tr>
-            <?php endforeach; ?>
+            <?php else: ?>
+                <?php 
+                $days = array(
+                    1 => __('Poniedziałek', 'booking-system-df'),
+                    2 => __('Wtorek', 'booking-system-df'),
+                    3 => __('Środa', 'booking-system-df'),
+                    4 => __('Czwartek', 'booking-system-df'),
+                    5 => __('Piątek', 'booking-system-df'),
+                    6 => __('Sobota', 'booking-system-df'),
+                    7 => __('Niedziela', 'booking-system-df')
+                );
+                foreach ($rules as $rule): ?>
+                    <tr>
+                        <td><?php echo esc_html($days[$rule->day_of_week]); ?></td>
+                        <td><?php echo esc_html($rule->start_time . ' - ' . $rule->end_time); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>
