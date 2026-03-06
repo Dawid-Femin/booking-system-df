@@ -84,12 +84,21 @@ class PayU_Gateway {
         $body = json_decode(wp_remote_retrieve_body($response), true);
         
         if (!isset($body['access_token'])) {
-            Booking_System_Logger::log_error('PayU OAuth response invalid', array('response' => $body));
+            Booking_System_Logger::log_error('PayU OAuth response invalid', array(
+                'response' => $body,
+                'response_code' => wp_remote_retrieve_response_code($response),
+                'raw_body' => wp_remote_retrieve_body($response)
+            ));
             throw new Booking_API_Error('Nie udało się uzyskać tokenu dostępu PayU.');
         }
 
         $this->access_token = $body['access_token'];
         $this->token_expires_at = time() + $body['expires_in'] - 60;
+        
+        Booking_System_Logger::log_info('PayU OAuth token obtained', array(
+            'token_length' => strlen($this->access_token),
+            'expires_in' => $body['expires_in']
+        ));
         
         return $this->access_token;
     }
@@ -162,11 +171,15 @@ class PayU_Gateway {
 
             $response_code = wp_remote_retrieve_response_code($response);
             $body = json_decode(wp_remote_retrieve_body($response), true);
+            $raw_body = wp_remote_retrieve_body($response);
             
             Booking_System_Logger::log_info('PayU create order response', array(
                 'code' => $response_code,
                 'body' => $body,
-                'order_data' => $order_data
+                'raw_body' => $raw_body,
+                'headers' => wp_remote_retrieve_headers($response),
+                'order_data' => $order_data,
+                'api_url' => $url
             ));
             
             if (!isset($body['orderId']) || !isset($body['redirectUri'])) {
