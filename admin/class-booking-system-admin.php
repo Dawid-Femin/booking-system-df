@@ -208,6 +208,7 @@ class Booking_System_Admin {
                 'payu_client_secret' => Encryption_Helper::encrypt(sanitize_text_field($_POST['payu_client_secret'])),
                 'payu_pos_id' => Encryption_Helper::encrypt(sanitize_text_field($_POST['payu_pos_id'])),
                 'payu_sandbox' => isset($_POST['payu_sandbox']) ? '1' : '0',
+                'payu_force_on_localhost' => isset($_POST['payu_force_on_localhost']) ? '1' : '0',
                 'google_client_id' => Encryption_Helper::encrypt(sanitize_text_field($_POST['google_client_id'])),
                 'google_client_secret' => Encryption_Helper::encrypt(sanitize_text_field($_POST['google_client_secret'])),
                 'google_refresh_token' => Encryption_Helper::encrypt(sanitize_text_field($_POST['google_refresh_token']))

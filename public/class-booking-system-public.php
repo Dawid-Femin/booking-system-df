@@ -131,6 +131,29 @@ class Booking_System_Public {
         return ob_get_clean();
     }
 
+    /**
+     * Shortcode: [booking_confirmation]
+     */
+    public function booking_confirmation_shortcode($atts) {
+        $booking_status = isset($_GET['booking_status']) ? sanitize_text_field($_GET['booking_status']) : '';
+        $consultation_id = isset($_GET['consultation_id']) ? intval($_GET['consultation_id']) : 0;
+        $dev_mode = isset($_GET['dev_mode']) ? sanitize_text_field($_GET['dev_mode']) : '';
+        
+        if (!$consultation_id) {
+            return '<p>' . __('Nieprawidłowy identyfikator rezerwacji.', 'booking-system-df') . '</p>';
+        }
+        
+        $consultation = Consultation::get_by_id($consultation_id);
+        
+        if (!$consultation) {
+            return '<p>' . __('Nie znaleziono rezerwacji.', 'booking-system-df') . '</p>';
+        }
+        
+        ob_start();
+        include BOOKING_SYSTEM_DF_PLUGIN_DIR . 'public/views/booking-confirmation.php';
+        return ob_get_clean();
+    }
+
     private function process_booking_form() {
         if (!isset($_POST['booking_nonce']) || !wp_verify_nonce($_POST['booking_nonce'], 'booking_form')) {
             return Result::failure(__('Nieprawidłowe żądanie.', 'booking-system-df'));

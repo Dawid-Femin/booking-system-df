@@ -12,6 +12,7 @@ class PayU_Gateway {
     private $client_secret;
     private $pos_id;
     private $is_sandbox;
+    private $force_on_localhost;
     private $access_token;
     private $token_expires_at;
 
@@ -42,6 +43,9 @@ class PayU_Gateway {
                     break;
                 case 'payu_sandbox':
                     $this->is_sandbox = ($value === '1');
+                    break;
+                case 'payu_force_on_localhost':
+                    $this->force_on_localhost = ($value === '1');
                     break;
             }
         }
@@ -91,16 +95,26 @@ class PayU_Gateway {
     }
 
     public function create_order($consultation_id, $amount, $currency, $description, $customer_email, $customer_name) {
-        // Development mode - skip PayU on localhost
-        if (defined('WP_DEBUG') && WP_DEBUG && (strpos(home_url(), 'localhost') !== false || strpos(home_url(), '.local') !== false)) {
-            Booking_System_Logger::log_info('PayU skipped - development mode', array(
+        // Development mode - skip PayU on localhost (unless forced)
+        $is_localhost = (strpos(home_url(), 'localhost') !== false || strpos(home_url(), '.local') !== false || strpos(home_url(), '127.0.0.1') !== false);
+        
+        if ($is_localhost && !$this->force_on_localhost) {
+            Booking_System_Logger::log_info('PayU skipped - development mode (localhost detected, not forced)', array(
                 'consultation_id' => $consultation_id,
-                'amount' => $amount
+                'amount' => $amount,
+                'home_url' => home_url()
             ));
             
             return Result::success(array(
                 'order_id' => 'DEV_ORDER_' . $consultation_id . '_' . time(),
                 'redirect_url' => home_url('/wp-json/booking-system-df/v1/payment-return?consultation_id=' . $consultation_id . '&dev_mode=1')
+            ));
+        }
+        
+        if ($is_localhost && $this->force_on_localhost) {
+            Booking_System_Logger::log_info('PayU forced on localhost - may return 403 error', array(
+                'consultation_id' => $consultation_id,
+                'amount' => $amount
             ));
         }
         

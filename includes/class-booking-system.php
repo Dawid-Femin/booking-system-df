@@ -61,6 +61,7 @@ class Booking_System {
         add_shortcode('booking_calendar', array($public, 'booking_calendar_shortcode'));
         add_shortcode('booking_form', array($public, 'booking_form_shortcode'));
         add_shortcode('my_consultations', array($public, 'my_consultations_shortcode'));
+        add_shortcode('booking_confirmation', array($public, 'booking_confirmation_shortcode'));
     }
 
     public function run() {
