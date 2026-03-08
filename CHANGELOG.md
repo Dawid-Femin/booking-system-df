@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.14] - 2024-03-08
+
+### Zmieniono
+- Ukrywanie sekcji "Wybierz dzień" po wyborze godziny
+- Przycisk "Zmień" pokazuje z powrotem kalendarz dni
+
+### Ulepszone
+- Czystszy widok - widoczny tylko aktywny krok
+- Lepszy flow rezerwacji
+
 ## [1.0.13] - 2024-03-08
 
 ### Poprawiono

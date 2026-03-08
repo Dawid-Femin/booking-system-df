@@ -235,7 +235,8 @@ jQuery(document).ready(function($) {
         $('#end_datetime').val(selectedSlot.end);
         $('#selected-slot-text').text(selectedSlot.display);
         
-        // Show step 3
+        // Hide step 1 and step 2, show step 3
+        $('#step-1').slideUp();
         $('#step-2').slideUp();
         $('#step-3').slideDown();
         
@@ -247,7 +248,8 @@ jQuery(document).ready(function($) {
     // Change slot
     $('#change-slot-btn').on('click', function() {
         $('#step-3').slideUp();
-        $('#step-1').addClass('active').show();
+        $('#step-1').slideDown().addClass('active');
+        $('#step-2').hide();
         $('.calendar-day').removeClass('selected');
         $('.time-slot-btn').removeClass('selected');
         selectedSlot = null;
