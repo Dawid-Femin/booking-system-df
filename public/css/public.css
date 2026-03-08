@@ -36,6 +36,9 @@
 .booking-header {
     text-align: center;
     margin-bottom: 50px;
+    background-color: #C8FEC2;
+    padding: 30px;
+    border-radius: 26px;
 }
 
 .booking-header h2 {

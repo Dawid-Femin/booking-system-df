@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.11] - 2024-03-08
+
+### Dodano
+- Tło #C8FEC2 dla booking-header
+- Padding 30px dla booking-header
+- Border-radius 26px dla booking-header
+
+### Ulepszone
+- Wizualne wyróżnienie nagłówka formularza rezerwacji
+- Spójność z designem buttonów
+
 ## [1.0.10] - 2024-03-08
 
 ### Zmieniono
