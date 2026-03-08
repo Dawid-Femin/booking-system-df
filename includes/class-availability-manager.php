@@ -92,14 +92,18 @@ class Availability_Manager {
         $timezone = new DateTimeZone('Europe/Warsaw');
         $current = clone $start_time;
         
+        // Minimum 24 hours advance booking
+        $now = new DateTime('now', $timezone);
+        $minimum_booking_time = clone $now;
+        $minimum_booking_time->modify('+24 hours');
+        
         while ($current < $end_time) {
             $slot_end = clone $current;
             $slot_end->modify("+{$duration_minutes} minutes");
             
             if ($slot_end <= $end_time) {
-                // Only include future slots
-                $now = new DateTime('now', $timezone);
-                if ($current > $now) {
+                // Only include slots that are at least 24 hours in the future
+                if ($current >= $minimum_booking_time) {
                     $slots[] = new Time_Slot(clone $current, clone $slot_end);
                 }
             }
@@ -135,14 +139,18 @@ class Availability_Manager {
         
         $current = clone $start_time;
         
+        // Minimum 24 hours advance booking
+        $now = new DateTime('now', $timezone);
+        $minimum_booking_time = clone $now;
+        $minimum_booking_time->modify('+24 hours');
+        
         while ($current < $end_time) {
             $slot_end = clone $current;
             $slot_end->modify("+{$duration_minutes} minutes");
             
             if ($slot_end <= $end_time) {
-                // Only include future slots
-                $now = new DateTime('now', $timezone);
-                if ($current > $now) {
+                // Only include slots that are at least 24 hours in the future
+                if ($current >= $minimum_booking_time) {
                     $slots[] = new Time_Slot(clone $current, clone $slot_end);
                 }
             }
