@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.18] - 2024-03-08
+
+### Zmieniono
+- Zwiększono offset scrollowania z -20px na -50px
+- Więcej przestrzeni nad kafelkiem "Wybrany termin" dla lepszej widoczności
+- Dotyczy scrollowania po wyborze dnia i po wyborze godziny
+
 ## [1.0.17] - 2024-03-08
 
 ### Poprawiono
