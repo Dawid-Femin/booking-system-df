@@ -152,7 +152,7 @@
 
 .calendar-day.selected {
     background: #AEE7A5 !important;
-    border-color: #AEE7A5 !important;
+    border: 2px solid #C8FEC2 !important;
 }
 
 .calendar-day.selected .day-name,
@@ -217,7 +217,7 @@
 .time-slot-btn.selected {
     background: #AEE7A5 !important;
     color: #000000 !important;
-    border-color: #AEE7A5 !important;
+    border: 2px solid #C8FEC2 !important;
 }
 
 /* Selected Summary */
