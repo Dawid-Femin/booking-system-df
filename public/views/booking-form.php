@@ -240,8 +240,9 @@ jQuery(document).ready(function($) {
         $('#step-2').slideUp();
         $('#step-3').slideDown();
         
+        // Scroll to selected-summary box
         $('html, body').animate({
-            scrollTop: $('#step-3').offset().top - 20
+            scrollTop: $('.selected-summary').offset().top - 20
         }, 300);
     });
     
