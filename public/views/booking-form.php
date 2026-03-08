@@ -209,7 +209,7 @@ jQuery(document).ready(function($) {
         $('#step-2').slideDown();
         
         $('html, body').animate({
-            scrollTop: $('#step-2').offset().top - 50
+            scrollTop: $('#step-2').offset().top - 100
         }, 300);
     });
     
@@ -242,7 +242,7 @@ jQuery(document).ready(function($) {
             $('#step-3').slideDown(400, function() {
                 // Scroll to selected-summary box after all animations complete
                 $('html, body').animate({
-                    scrollTop: $('.selected-summary').offset().top - 50
+                    scrollTop: $('.selected-summary').offset().top - 100
                 }, 300);
             });
         });

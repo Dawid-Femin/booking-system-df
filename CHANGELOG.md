@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.19] - 2024-03-08
+
+### Zmieniono
+- Zwiększono offset scrollowania z -50px na -100px
+- Jeszcze więcej przestrzeni nad elementami dla optymalnej widoczności
+
 ## [1.0.18] - 2024-03-08
 
 ### Zmieniono
