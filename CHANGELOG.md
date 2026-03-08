@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.2] - 2024-03-08
+
+### Dodano
+- Możliwość edycji typów konsultacji
+- Kolumna "Status" w liście typów konsultacji (aktywny/nieaktywny)
+- Przycisk "Edytuj" przy każdym typie konsultacji
+- Przycisk "Anuluj" podczas edycji typu
+- Wyświetlanie wszystkich typów (również nieaktywnych) w panelu administracyjnym
+
+### Poprawiono
+- Formularz typów konsultacji automatycznie wypełnia się danymi podczas edycji
+- Lista typów pokazuje również nieaktywne typy dla łatwiejszego zarządzania
+
 ## [1.0.1] - 2024-03-08
 
 ### Dodano
