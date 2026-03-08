@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.0.5] - 2024-03-08
+
+### Dodano
+- Nowoczesny kalendarz rezerwacji z kartami dni
+- 2-krokowy proces rezerwacji (wybór terminu → dane osobowe)
+- Wizualne potwierdzenie wybranego terminu (zielony box)
+- Ikony SVG dla czasu trwania, ceny i potwierdzenia
+- Auto-scroll do formularza po wyborze terminu
+- Przycisk "Zmień" do zmiany wybranego terminu
+- Przycisk "Wróć do kalendarza" w kroku 2
+- Gradient design dla nagłówków kart dni
+- Smooth animations i hover effects
+
+### Zmieniono
+- Przeprojektowano formularz rezerwacji z focus na UX
+- Grid layout dla kart dni (responsywny)
+- Nowoczesne przyciski z gradientami i cieniami
+- Lepsze formatowanie dat (polskie nazwy miesięcy)
+- Responsywny design dla urządzeń mobilnych
+
+### Ulepszone
+- Czytelność kalendarza
+- Wizualna hierarchia informacji
+- Interaktywność (hover states, transitions)
+- Mobile-friendly layout
+
 ## [1.0.4] - 2024-03-08
 
 ### Dodano
