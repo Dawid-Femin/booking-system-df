@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.16] - 2024-03-08
+
+### Poprawiono
+- Scroll do kafelka "Wybrany termin" po wyborze godziny
+- Dodano callback do slideDown animation dla prawidłowego scrollowania
+- Użytkownik widzi pełny kontekst swojego wyboru po animacji
+
 ## [1.0.15] - 2024-03-08
 
 ### Poprawiono
