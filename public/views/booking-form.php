@@ -236,13 +236,15 @@ jQuery(document).ready(function($) {
         $('#selected-slot-text').text(selectedSlot.display);
         
         // Hide step 1 and step 2, show step 3
-        $('#step-1').slideUp();
-        $('#step-2').slideUp();
-        $('#step-3').slideDown(400, function() {
-            // Scroll to selected-summary box after animation completes
-            $('html, body').animate({
-                scrollTop: $('.selected-summary').offset().top - 20
-            }, 300);
+        $('#step-1').slideUp(400);
+        $('#step-2').slideUp(400, function() {
+            // After hiding steps 1 and 2, show step 3
+            $('#step-3').slideDown(400, function() {
+                // Scroll to selected-summary box after all animations complete
+                $('html, body').animate({
+                    scrollTop: $('.selected-summary').offset().top - 20
+                }, 300);
+            });
         });
     });
     

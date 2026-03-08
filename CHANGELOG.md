@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.17] - 2024-03-08
+
+### Poprawiono
+- Sekwencja animacji przy wyborze godziny - najpierw ukrywają się kroki 1 i 2, potem pokazuje się krok 3
+- Eliminacja wielokrotnego scrollowania - scroll wykonuje się tylko raz po zakończeniu wszystkich animacji
+- Płynniejsze przejście między krokami rezerwacji
+
 ## [1.0.16] - 2024-03-08
 
 ### Poprawiono
