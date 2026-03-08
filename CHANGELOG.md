@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.13] - 2024-03-08
+
+### Poprawiono
+- Przywrócenie border w selected-summary (2px solid #C8FEC2)
+
 ## [1.0.12] - 2024-03-08
 
 ### Zmieniono
