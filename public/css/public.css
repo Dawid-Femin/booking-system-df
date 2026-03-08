@@ -180,20 +180,21 @@
 
 /* Time Slots Grid */
 .booking-time-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 30px;
 }
 
 .time-slots-for-date {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
 .time-slot-btn {
-    padding: 14px;
+    min-width: 85px;
+    padding: 14px 10px;
     background: #C8FEC2;
     border: 1px solid #ddd;
     border-radius: 26px;
@@ -384,8 +385,12 @@
     
     .booking-time-grid,
     .time-slots-for-date {
-        grid-template-columns: repeat(4, 1fr);
         gap: 8px;
+    }
+    
+    .time-slot-btn {
+        min-width: 75px;
+        padding: 12px 8px;
     }
     
     .form-grid {

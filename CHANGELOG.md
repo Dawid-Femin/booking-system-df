@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.10] - 2024-03-08
+
+### Zmieniono
+- Grid layout na flexbox z flex-wrap dla godzin
+- Min-width: 85px dla buttonów godzin (spójna szerokość z dniami)
+- Padding: 14px 10px dla lepszego dopasowania
+- Responsive: min-width: 75px i padding: 12px 8px na mobile
+
+### Ulepszone
+- Spójna szerokość buttonów dni i godzin
+- Lepsze dopasowanie layoutu
+- Flexbox zapewnia bardziej elastyczny układ
+
 ## [1.0.9] - 2024-03-08
 
 ### Dodano
