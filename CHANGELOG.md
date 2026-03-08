@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.0.6] - 2024-03-08
+
+### Dodano
+- Kompaktowy mini-kalendarz z widokiem 2 tygodni (grid 7 dni)
+- 3-krokowy proces rezerwacji (dzień → godzina → dane)
+- Minimalistyczny design z zielonym akcentem (#7fb069)
+- Interaktywny wybór dnia z wizualnym feedbackiem
+- Osobny widok slotów czasowych dla wybranego dnia
+- Przycisk "Zmień dzień" do powrotu do kalendarza
+- Przycisk "Zmień" w podsumowaniu wybranego terminu
+
+### Zmieniono
+- Przeprojektowano kalendarz z 14 kart dni na kompaktowy grid
+- Uproszczono UI - więcej białej przestrzeni, czystsza typografia
+- Zmieniono kolor akcentu na #7fb069 (zielony z witryny)
+- Poprawiono responsywność na urządzeniach mobilnych
+- Zoptymalizowano layout dla lepszej czytelności
+
+### Ulepszone
+- Bardziej intuicyjny flow rezerwacji
+- Lepsza wizualna hierarchia kroków
+- Smooth transitions między krokami
+- Kompaktowy widok kalendarza (zamiast długiej listy kart)
+
 ## [1.0.5] - 2024-03-08
 
 ### Dodano

@@ -1,6 +1,6 @@
 <?php
 /**
- * Booking form view - modern calendar design.
+ * Booking form view - compact interactive calendar.
  */
 if (!defined('ABSPATH')) exit;
 ?>
@@ -17,9 +17,6 @@ if (!defined('ABSPATH')) exit;
                 <?php echo esc_html($type->duration_minutes); ?> min
             </span>
             <span class="booking-price">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zm1 4H7v1h2v1H7v1h2v1H7v1h2v1H7v1h2a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1z"/>
-                </svg>
                 <?php echo esc_html($type->price . ' ' . $type->currency); ?>
             </span>
         </div>
@@ -31,137 +28,156 @@ if (!defined('ABSPATH')) exit;
         <input type="hidden" name="start_datetime" id="start_datetime" required>
         <input type="hidden" name="end_datetime" id="end_datetime" required>
         
-        <div class="booking-step" id="step-1">
-            <h3 class="step-title">
-                <span class="step-number">1</span>
-                <?php _e('Wybierz termin', 'booking-system-df'); ?>
-            </h3>
-            
-            <?php
-            // Generate available slots
-            $start_date = date('Y-m-d');
-            $end_date = date('Y-m-d', strtotime('+30 days'));
-            
-            $slots_result = Availability_Manager::get_available_slots($type_id, $start_date, $end_date);
-            $slots = $slots_result->is_success() ? $slots_result->get_data() : array();
-            ?>
-            
-            <?php if (empty($slots)): ?>
-                <div class="booking-no-slots">
-                    <svg width="48" height="48" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zM7 4h2v5H7V4zm0 6h2v2H7v-2z"/>
-                    </svg>
-                    <p><?php _e('Brak dostępnych terminów w ciągu najbliższych 30 dni.', 'booking-system-df'); ?></p>
-                    <p><?php _e('Skontaktuj się z nami bezpośrednio.', 'booking-system-df'); ?></p>
-                </div>
-            <?php else: ?>
-                <?php
-                $polish_days = array(
-                    'Monday' => 'Poniedziałek',
-                    'Tuesday' => 'Wtorek',
-                    'Wednesday' => 'Środa',
-                    'Thursday' => 'Czwartek',
-                    'Friday' => 'Piątek',
-                    'Saturday' => 'Sobota',
-                    'Sunday' => 'Niedziela'
-                );
+        <?php
+        // Generate available slots
+        $start_date = date('Y-m-d');
+        $end_date = date('Y-m-d', strtotime('+30 days'));
+        
+        $slots_result = Availability_Manager::get_available_slots($type_id, $start_date, $end_date);
+        $slots = $slots_result->is_success() ? $slots_result->get_data() : array();
+        
+        // Group slots by date
+        $slots_by_date = array();
+        foreach ($slots as $slot) {
+            $date = $slot->start->format('Y-m-d');
+            if (!isset($slots_by_date[$date])) {
+                $slots_by_date[$date] = array();
+            }
+            $slots_by_date[$date][] = $slot;
+        }
+        
+        $polish_days = array(
+            'Monday' => 'Pon', 'Tuesday' => 'Wt', 'Wednesday' => 'Śr',
+            'Thursday' => 'Czw', 'Friday' => 'Pt', 'Saturday' => 'Sob', 'Sunday' => 'Nie'
+        );
+        
+        $polish_days_full = array(
+            'Monday' => 'Poniedziałek', 'Tuesday' => 'Wtorek', 'Wednesday' => 'Środa',
+            'Thursday' => 'Czwartek', 'Friday' => 'Piątek', 'Saturday' => 'Sobota', 'Sunday' => 'Niedziela'
+        );
+        
+        $polish_months = array(
+            '01' => 'stycznia', '02' => 'lutego', '03' => 'marca', '04' => 'kwietnia',
+            '05' => 'maja', '06' => 'czerwca', '07' => 'lipca', '08' => 'sierpnia',
+            '09' => 'września', '10' => 'października', '11' => 'listopada', '12' => 'grudnia'
+        );
+        ?>
+        
+        <?php if (empty($slots)): ?>
+            <div class="booking-no-slots">
+                <p><?php _e('Brak dostępnych terminów w ciągu najbliższych 30 dni.', 'booking-system-df'); ?></p>
+                <p><?php _e('Skontaktuj się z nami bezpośrednio.', 'booking-system-df'); ?></p>
+            </div>
+        <?php else: ?>
+            <div class="booking-step active" id="step-1">
+                <h3 class="step-title"><?php _e('Wybierz dzień', 'booking-system-df'); ?></h3>
                 
-                $polish_months = array(
-                    '01' => 'stycznia', '02' => 'lutego', '03' => 'marca', '04' => 'kwietnia',
-                    '05' => 'maja', '06' => 'czerwca', '07' => 'lipca', '08' => 'sierpnia',
-                    '09' => 'września', '10' => 'października', '11' => 'listopada', '12' => 'grudnia'
-                );
-                ?>
-                
-                <div class="booking-calendar-grid">
+                <div class="booking-mini-calendar">
                     <?php
-                    $current_date = '';
-                    $day_count = 0;
-                    foreach ($slots as $slot):
-                        $slot_date = $slot->start->format('Y-m-d');
-                        
-                        if ($slot_date !== $current_date):
-                            if ($current_date !== '') echo '</div></div>';
-                            $current_date = $slot_date;
-                            $day_name_en = $slot->start->format('l');
-                            $day_name_pl = isset($polish_days[$day_name_en]) ? $polish_days[$day_name_en] : $day_name_en;
-                            $day_num = $slot->start->format('d');
-                            $month = $polish_months[$slot->start->format('m')];
-                            $day_count++;
+                    $current_date = new DateTime($start_date);
+                    $end_date_obj = new DateTime($end_date);
+                    $week_count = 0;
+                    
+                    while ($current_date <= $end_date_obj && $week_count < 2):
+                        $week_start = clone $current_date;
+                        ?>
+                        <div class="calendar-week">
+                            <?php
+                            for ($i = 0; $i < 7 && $current_date <= $end_date_obj; $i++):
+                                $date_str = $current_date->format('Y-m-d');
+                                $has_slots = isset($slots_by_date[$date_str]);
+                                $day_name = $polish_days[$current_date->format('l')];
+                                $day_num = $current_date->format('d');
+                                ?>
+                                <button type="button" 
+                                        class="calendar-day <?php echo $has_slots ? 'has-slots' : 'no-slots'; ?>"
+                                        data-date="<?php echo esc_attr($date_str); ?>"
+                                        <?php echo !$has_slots ? 'disabled' : ''; ?>>
+                                    <span class="day-name"><?php echo esc_html($day_name); ?></span>
+                                    <span class="day-num"><?php echo esc_html($day_num); ?></span>
+                                </button>
+                                <?php
+                                $current_date->modify('+1 day');
+                            endfor;
                             ?>
-                            <div class="booking-day-card">
-                                <div class="booking-day-header">
-                                    <span class="day-name"><?php echo esc_html($day_name_pl); ?></span>
-                                    <span class="day-date"><?php echo esc_html($day_num . ' ' . $month); ?></span>
-                                </div>
-                                <div class="booking-time-slots">
-                        <?php endif; ?>
-                        
-                        <button type="button" class="booking-time-slot" 
-                                data-start="<?php echo esc_attr($slot->get_start_formatted()); ?>"
-                                data-end="<?php echo esc_attr($slot->get_end_formatted()); ?>"
-                                data-display="<?php echo esc_attr($day_name_pl . ', ' . $day_num . ' ' . $month . ' - ' . $slot->get_start_time()); ?>">
-                            <?php echo esc_html($slot->get_start_time()); ?>
-                        </button>
-                        
+                        </div>
+                        <?php
+                        $week_count++;
+                    endwhile;
+                    ?>
+                </div>
+            </div>
+            
+            <div class="booking-step" id="step-2" style="display:none;">
+                <button type="button" class="back-link" id="back-to-calendar">
+                    ← <?php _e('Zmień dzień', 'booking-system-df'); ?>
+                </button>
+                
+                <h3 class="step-title" id="selected-day-title"></h3>
+                
+                <div class="booking-time-grid" id="time-slots-container">
+                    <?php foreach ($slots_by_date as $date => $day_slots): ?>
+                        <div class="time-slots-for-date" data-date="<?php echo esc_attr($date); ?>" style="display:none;">
+                            <?php foreach ($day_slots as $slot): 
+                                $day_name_full = $polish_days_full[$slot->start->format('l')];
+                                $day_num = $slot->start->format('d');
+                                $month = $polish_months[$slot->start->format('m')];
+                                ?>
+                                <button type="button" class="time-slot-btn" 
+                                        data-start="<?php echo esc_attr($slot->get_start_formatted()); ?>"
+                                        data-end="<?php echo esc_attr($slot->get_end_formatted()); ?>"
+                                        data-display="<?php echo esc_attr($day_name_full . ', ' . $day_num . ' ' . $month . ' - ' . $slot->get_start_time()); ?>">
+                                    <?php echo esc_html($slot->get_start_time()); ?>
+                                </button>
+                            <?php endforeach; ?>
+                        </div>
                     <?php endforeach; ?>
-                    </div></div>
+                </div>
+            </div>
+            
+            <div class="booking-step" id="step-3" style="display:none;">
+                <div class="selected-summary">
+                    <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    </svg>
+                    <div>
+                        <strong><?php _e('Wybrany termin:', 'booking-system-df'); ?></strong>
+                        <span id="selected-slot-text"></span>
+                    </div>
+                    <button type="button" class="change-btn" id="change-slot-btn">
+                        <?php _e('Zmień', 'booking-system-df'); ?>
+                    </button>
                 </div>
                 
-                <div class="selected-slot-display" id="selected-slot-display" style="display:none;">
-                    <div class="selected-slot-content">
-                        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                        </svg>
-                        <div>
-                            <strong><?php _e('Wybrany termin:', 'booking-system-df'); ?></strong>
-                            <span id="selected-slot-text"></span>
-                        </div>
-                        <button type="button" class="change-slot-btn" id="change-slot-btn">
-                            <?php _e('Zmień', 'booking-system-df'); ?>
-                        </button>
+                <h3 class="step-title"><?php _e('Twoje dane', 'booking-system-df'); ?></h3>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="patient_name"><?php _e('Imię i nazwisko', 'booking-system-df'); ?> *</label>
+                        <input type="text" name="patient_name" id="patient_name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="patient_email"><?php _e('Email', 'booking-system-df'); ?> *</label>
+                        <input type="email" name="patient_email" id="patient_email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="patient_phone"><?php _e('Telefon', 'booking-system-df'); ?> *</label>
+                        <input type="tel" name="patient_phone" id="patient_phone" required>
+                    </div>
+                    
+                    <div class="form-group form-group-full">
+                        <label for="patient_notes"><?php _e('Notatki (opcjonalnie)', 'booking-system-df'); ?></label>
+                        <textarea name="patient_notes" id="patient_notes" rows="4" placeholder="<?php _e('Dodatkowe informacje...', 'booking-system-df'); ?>"></textarea>
                     </div>
                 </div>
-            <?php endif; ?>
-        </div>
-        
-        <div class="booking-step" id="step-2" style="display:none;">
-            <h3 class="step-title">
-                <span class="step-number">2</span>
-                <?php _e('Twoje dane', 'booking-system-df'); ?>
-            </h3>
-            
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="patient_name"><?php _e('Imię i nazwisko', 'booking-system-df'); ?> *</label>
-                    <input type="text" name="patient_name" id="patient_name" required>
-                </div>
                 
-                <div class="form-group">
-                    <label for="patient_email"><?php _e('Email', 'booking-system-df'); ?> *</label>
-                    <input type="email" name="patient_email" id="patient_email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="patient_phone"><?php _e('Telefon', 'booking-system-df'); ?> *</label>
-                    <input type="tel" name="patient_phone" id="patient_phone" required>
-                </div>
-                
-                <div class="form-group form-group-full">
-                    <label for="patient_notes"><?php _e('Notatki (opcjonalnie)', 'booking-system-df'); ?></label>
-                    <textarea name="patient_notes" id="patient_notes" rows="4" placeholder="<?php _e('Dodatkowe informacje, które chcesz przekazać...', 'booking-system-df'); ?>"></textarea>
-                </div>
-            </div>
-            
-            <div class="form-actions">
-                <button type="button" class="button button-secondary" id="back-to-calendar">
-                    <?php _e('← Wróć do kalendarza', 'booking-system-df'); ?>
-                </button>
-                <button type="submit" name="submit_booking" class="button button-primary">
-                    <?php _e('Przejdź do płatności →', 'booking-system-df'); ?>
+                <button type="submit" name="submit_booking" class="button-primary">
+                    <?php _e('Umów konsultację', 'booking-system-df'); ?>
                 </button>
             </div>
-        </div>
+        <?php endif; ?>
     </form>
 </div>
 
@@ -169,9 +185,41 @@ if (!defined('ABSPATH')) exit;
 jQuery(document).ready(function($) {
     let selectedSlot = null;
     
-    // Handle time slot selection
-    $('.booking-time-slot').on('click', function() {
-        $('.booking-time-slot').removeClass('selected');
+    // Select day from calendar
+    $('.calendar-day.has-slots').on('click', function() {
+        const date = $(this).data('date');
+        
+        $('.calendar-day').removeClass('selected');
+        $(this).addClass('selected');
+        
+        // Show time slots for selected date
+        $('.time-slots-for-date').hide();
+        $(`.time-slots-for-date[data-date="${date}"]`).show();
+        
+        // Update title
+        const dayText = $(this).find('.day-name').text();
+        const dayNum = $(this).find('.day-num').text();
+        $('#selected-day-title').text(`${dayText}, ${dayNum}`);
+        
+        // Show step 2
+        $('#step-1').removeClass('active');
+        $('#step-2').slideDown();
+        
+        $('html, body').animate({
+            scrollTop: $('#step-2').offset().top - 20
+        }, 300);
+    });
+    
+    // Back to calendar
+    $('#back-to-calendar').on('click', function() {
+        $('#step-2').slideUp();
+        $('#step-1').addClass('active');
+        $('.calendar-day').removeClass('selected');
+    });
+    
+    // Select time slot
+    $(document).on('click', '.time-slot-btn', function() {
+        $('.time-slot-btn').removeClass('selected');
         $(this).addClass('selected');
         
         selectedSlot = {
@@ -183,32 +231,25 @@ jQuery(document).ready(function($) {
         $('#start_datetime').val(selectedSlot.start);
         $('#end_datetime').val(selectedSlot.end);
         $('#selected-slot-text').text(selectedSlot.display);
-        $('#selected-slot-display').slideDown();
         
-        // Auto-scroll to next step
-        setTimeout(function() {
-            $('#step-2').slideDown();
-            $('html, body').animate({
-                scrollTop: $('#step-2').offset().top - 20
-            }, 500);
+        // Show step 3
+        $('#step-2').slideUp();
+        $('#step-3').slideDown();
+        
+        $('html, body').animate({
+            scrollTop: $('#step-3').offset().top - 20
         }, 300);
     });
     
-    // Change slot button
+    // Change slot
     $('#change-slot-btn').on('click', function() {
-        $('.booking-time-slot').removeClass('selected');
-        $('#selected-slot-display').slideUp();
-        $('#step-2').slideUp();
+        $('#step-3').slideUp();
+        $('#step-1').addClass('active').show();
+        $('.calendar-day').removeClass('selected');
+        $('.time-slot-btn').removeClass('selected');
         selectedSlot = null;
         $('#start_datetime').val('');
         $('#end_datetime').val('');
-    });
-    
-    // Back to calendar button
-    $('#back-to-calendar').on('click', function() {
-        $('html, body').animate({
-            scrollTop: $('#step-1').offset().top - 20
-        }, 500);
     });
     
     // Form validation
