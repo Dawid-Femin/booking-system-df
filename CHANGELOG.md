@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.0.3] - 2024-03-08
+
+### Dodano
+- Nowy system dostępności - kalendarz 2-tygodniowy
+- Możliwość dodawania wielu przedziałów czasowych dla jednego dnia (np. 8:00-12:00 i 16:00-18:00)
+- Funkcja kopiowania przedziałów czasowych między dniami
+- Funkcja wklejania skopiowanych przedziałów
+- Przycisk "Dodaj przedział" dla każdego dnia
+- Automatyczne tworzenie tabeli `booking_availability_slots` przy pierwszym wejściu
+- Model `Availability_Slot` dla konkretnych dat (zamiast dni tygodnia)
+- Kompatybilność wsteczna ze starym systemem reguł tygodniowych
+
+### Zmieniono
+- Widok dostępności z formularza reguł na kalendarz 2-tygodniowy
+- `Availability_Manager` używa nowego systemu slotów (z fallbackiem do starych reguł)
+- Ulepszona obsługa wielu przedziałów czasowych w ciągu dnia
+
+### Techniczne
+- Nowa tabela: `wp_booking_availability_slots` (date, start_time, end_time)
+- JavaScript do obsługi kopiowania/wklejania przedziałów
+- Automatyczna migracja przy pierwszym dostępie do strony dostępności
+
 ## [1.0.2] - 2024-03-08
 
 ### Dodano
