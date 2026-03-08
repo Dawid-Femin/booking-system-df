@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.0.1] - 2024-03-08
+
+### Dodano
+- Opcja "Tryb deweloperski (pomiń PayU)" w ustawieniach dla testów na produkcji
+- Strona potwierdzenia rezerwacji z shortcode [booking_confirmation]
+- Opcja "Wymuś PayU na localhost" dla testowania integracji lokalnie
+
+### Poprawiono
+- Błąd wyświetlania zapisanych danych PayU w ustawieniach
+- Problem z kalendarzem nie wyświetlającym się w formularzu rezerwacji
+- Błąd DateTime przy generowaniu slotów czasowych (usunięto sekundy z formatu czasu)
+- Usunięto SERIALIZABLE transaction isolation dla kompatybilności z MySQL
+- Zmieniono redirect z wp_redirect na JavaScript redirect w shortcode
+- Dodano checkbox "is_active" w formularzu reguł dostępności
+- Poprawiono wyświetlanie polskich nazw dni tygodnia
+
+### Techniczne
+- Dodano szczegółowe logowanie dla debugowania PayU (raw_body, headers, API URL)
+- Tryb deweloperski automatycznie akceptuje płatności bez przekierowania do PayU
+- Obsługa błędu 403 z PayU Sandbox na niektórych domenach
+
 ## [1.0.0] - 2024-03-05
 
 ### Dodano
