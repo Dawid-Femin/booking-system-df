@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.15] - 2024-03-08
+
+### Poprawiono
+- Scroll do kafelka "Wybrany termin" zamiast do początku formularza
+- Lepszy UX - użytkownik widzi pełny kontekst swojego wyboru
+
 ## [1.0.14] - 2024-03-08
 
 ### Zmieniono
