@@ -80,6 +80,17 @@ if (isset($settings['google_refresh_token'])) {
                     <p class="description"><?php _e('Przekieruj do PayU nawet na localhost (może zwrócić błąd 403)', 'booking-system-df'); ?></p>
                 </td>
             </tr>
+            <tr>
+                <th><label><?php _e('Tryb deweloperski (pomiń PayU)', 'booking-system-df'); ?></label></th>
+                <td>
+                    <input type="checkbox" name="payu_dev_mode" <?php 
+                        if (isset($settings['payu_dev_mode'])) {
+                            checked($settings['payu_dev_mode']->setting_value, '1');
+                        }
+                    ?>>
+                    <p class="description"><?php _e('Automatycznie akceptuj płatności bez przekierowania do PayU (do testów)', 'booking-system-df'); ?></p>
+                </td>
+            </tr>
         </table>
         
         <h2><?php _e('Google Meet', 'booking-system-df'); ?></h2>
