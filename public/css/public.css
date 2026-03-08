@@ -36,7 +36,7 @@
 .booking-header {
     text-align: center;
     margin-bottom: 50px;
-    background-color: #f8fdf5;
+    background-color: #f4faf5;
     padding: 30px;
     border-radius: 26px;
 }
@@ -225,7 +225,7 @@
 
 /* Selected Summary */
 .selected-summary {
-    background: #f8fdf5;
+    background: #f4faf5;
     border: 2px solid #C8FEC2;
     border-radius: 26px;
     padding: 20px;
@@ -329,7 +329,7 @@
 .form-group textarea:focus {
     outline: none;
     border-color: #C8FEC2;
-    background: #f8fdf5;
+    background: #f4faf5;
 }
 
 .form-group textarea {
