@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.12] - 2024-03-08
+
+### Zmieniono
+- Kolor tła booking-header z #C8FEC2 na #f4faf5
+- Kolor tła z #f8fdf5 na #f4faf5 (selected-summary, input focus)
+- Bordery buttonów dni i godzin na none (czysty design)
+
+### Ulepszone
+- Bardziej subtelne tło nagłówka
+- Czystszy wygląd buttonów bez borderów
+- Spójność kolorystyczna
+
 ## [1.0.11] - 2024-03-08
 
 ### Dodano
