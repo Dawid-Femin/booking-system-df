@@ -16,7 +16,8 @@
     font-size: 32px;
     margin: 0 0 15px 0;
     color: #1a1a1a;
-    font-weight: 600;
+    font-weight: 400;
+    font-family: "Lora", Sans-serif;
 }
 
 .booking-description {
@@ -24,6 +25,7 @@
     color: #666;
     margin: 0 0 20px 0;
     line-height: 1.6;
+    font-family: "Lora", Sans-serif;
 }
 
 .booking-meta {
@@ -38,6 +40,7 @@
     align-items: center;
     gap: 8px;
     color: #333;
+    font-family: "Lora", Sans-serif;
 }
 
 .booking-meta svg {
@@ -68,14 +71,16 @@
     font-size: 20px;
     margin: 0 0 25px 0;
     color: #1a1a1a;
-    font-weight: 600;
+    font-weight: 400;
+    font-family: "Lora", Sans-serif;
 }
 
 .back-link {
     background: none;
     border: none;
-    color: #7fb069;
-    font-size: 14px;
+    color: #000000;
+    font-size: 16px;
+    font-family: "Lora", Sans-serif;
     cursor: pointer;
     margin-bottom: 20px;
     padding: 0;
@@ -83,7 +88,7 @@
 }
 
 .back-link:hover {
-    opacity: 0.7;
+    opacity: 0.6;
 }
 
 /* Mini Calendar */
@@ -101,9 +106,9 @@
 }
 
 .calendar-day {
-    background: white;
-    border: 2px solid #e8e8e8;
-    border-radius: 12px;
+    background: #C8FEC2;
+    border: none;
+    border-radius: 26px;
     padding: 12px 8px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -111,22 +116,21 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    font-family: "Lora", Sans-serif;
 }
 
 .calendar-day.has-slots:hover {
-    border-color: #7fb069;
-    background: #f8fdf5;
+    background: #AEE7A5;
     transform: translateY(-2px);
 }
 
 .calendar-day.selected {
-    background: #7fb069;
-    border-color: #7fb069;
+    background: #AEE7A5;
 }
 
 .calendar-day.selected .day-name,
 .calendar-day.selected .day-num {
-    color: white;
+    color: #000000;
 }
 
 .calendar-day.no-slots {
@@ -136,14 +140,14 @@
 
 .day-name {
     font-size: 11px;
-    color: #999;
+    color: #666;
     font-weight: 500;
     text-transform: uppercase;
 }
 
 .day-num {
     font-size: 16px;
-    color: #333;
+    color: #000000;
     font-weight: 600;
 }
 
@@ -157,34 +161,34 @@
 
 .time-slot-btn {
     padding: 14px;
-    background: white;
-    border: 2px solid #e8e8e8;
-    border-radius: 10px;
+    background: #C8FEC2;
+    border: none;
+    border-radius: 26px;
     cursor: pointer;
-    font-size: 15px;
-    font-weight: 500;
-    color: #333;
+    font-size: 16px;
+    font-weight: 400;
+    color: #000000;
     transition: all 0.2s ease;
     text-align: center;
+    font-family: "Lora", Sans-serif;
+    line-height: 1.4em;
 }
 
 .time-slot-btn:hover {
-    border-color: #7fb069;
-    background: #f8fdf5;
+    background: #AEE7A5;
     transform: translateY(-2px);
 }
 
 .time-slot-btn.selected {
-    background: #7fb069;
-    border-color: #7fb069;
-    color: white;
+    background: #AEE7A5;
+    color: #000000;
 }
 
 /* Selected Summary */
 .selected-summary {
     background: #f8fdf5;
-    border: 2px solid #7fb069;
-    border-radius: 12px;
+    border: 2px solid #C8FEC2;
+    border-radius: 26px;
     padding: 20px;
     margin-bottom: 30px;
     display: flex;
@@ -206,28 +210,31 @@
     color: #1a1a1a;
     margin-bottom: 5px;
     font-size: 14px;
+    font-family: "Lora", Sans-serif;
 }
 
 .selected-summary span {
-    color: #333;
+    color: #000000;
     font-size: 15px;
+    font-family: "Lora", Sans-serif;
 }
 
 .change-btn {
-    background: white;
-    border: 2px solid #7fb069;
-    color: #7fb069;
-    padding: 8px 20px;
-    border-radius: 8px;
+    background-color: #C8FEC2;
+    border: none;
+    color: #000000;
+    padding: 10px 24px;
+    border-radius: 26px;
     cursor: pointer;
-    font-weight: 500;
-    font-size: 14px;
+    font-family: "Lora", Sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.4em;
     transition: all 0.2s;
 }
 
 .change-btn:hover {
-    background: #7fb069;
-    color: white;
+    background-color: #AEE7A5;
 }
 
 /* No Slots Message */
@@ -259,9 +266,10 @@
 .form-group label {
     display: block;
     margin-bottom: 8px;
-    font-weight: 500;
+    font-weight: 400;
     color: #1a1a1a;
-    font-size: 14px;
+    font-size: 16px;
+    font-family: "Lora", Sans-serif;
 }
 
 .form-group input[type="text"],
@@ -270,43 +278,45 @@
 .form-group textarea {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid #e8e8e8;
-    border-radius: 10px;
-    font-size: 15px;
+    border: 1px solid #ddd;
+    border-radius: 26px;
+    font-size: 16px;
+    font-family: "Lora", Sans-serif;
     transition: all 0.2s;
     box-sizing: border-box;
-    font-family: inherit;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #7fb069;
+    border-color: #C8FEC2;
     background: #f8fdf5;
 }
 
 .form-group textarea {
     resize: vertical;
+    border-radius: 20px;
 }
 
 /* Primary Button */
 .button-primary {
     width: 100%;
     padding: 16px 32px;
-    background: #7fb069;
-    color: white;
+    background-color: #C8FEC2;
+    color: #000000;
     border: none;
-    border-radius: 10px;
+    border-radius: 26px;
+    font-family: "Lora", Sans-serif;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 400;
+    line-height: 1.4em;
     cursor: pointer;
     transition: all 0.3s;
 }
 
 .button-primary:hover {
-    background: #6fa055;
+    background-color: #AEE7A5;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(127, 176, 105, 0.3);
 }
 
 /* Responsive */
@@ -367,14 +377,18 @@
 
 .consultation-card .button {
     display: inline-block;
-    padding: 10px 20px;
-    background: #7fb069;
-    color: #fff;
+    padding: 12px 24px;
+    background-color: #C8FEC2;
+    color: #000000;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 26px;
+    font-family: "Lora", Sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4em;
     transition: all 0.2s;
 }
 
 .consultation-card .button:hover {
-    background: #6fa055;
+    background-color: #AEE7A5;
 }

@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.0.7] - 2024-03-08
+
+### Zmieniono
+- Dostosowano style buttonów do designu strony (Elementor)
+- Kolor tła buttonów: #C8FEC2
+- Kolor hover: #AEE7A5
+- Font: "Lora", Sans-serif
+- Border-radius: 26px (zaokrąglone rogi)
+- Usunięto bordery z buttonów (czysty design)
+- Zaktualizowano wszystkie elementy interaktywne (dni kalendarza, sloty czasowe, przyciski)
+- Dostosowano inputy i textarea do stylu strony
+- Ujednolicono typografię z czcionką Lora
+
+### Ulepszone
+- Spójność wizualna z główną stroną
+- Bardziej elegancki i minimalistyczny wygląd
+- Lepsze dopasowanie do brandingu
+
 ## [1.0.6] - 2024-03-08
 
 ### Dodano
