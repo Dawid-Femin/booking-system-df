@@ -97,6 +97,9 @@ class Availability_Manager {
         $minimum_booking_time = clone $now;
         $minimum_booking_time->modify('+24 hours');
         
+        // Generate slots every 30 minutes instead of every duration_minutes
+        $slot_interval = 30;
+        
         while ($current < $end_time) {
             $slot_end = clone $current;
             $slot_end->modify("+{$duration_minutes} minutes");
@@ -108,7 +111,7 @@ class Availability_Manager {
                 }
             }
             
-            $current->modify("+{$duration_minutes} minutes");
+            $current->modify("+{$slot_interval} minutes");
         }
         
         return $slots;
@@ -144,6 +147,9 @@ class Availability_Manager {
         $minimum_booking_time = clone $now;
         $minimum_booking_time->modify('+24 hours');
         
+        // Generate slots every 30 minutes instead of every duration_minutes
+        $slot_interval = 30;
+        
         while ($current < $end_time) {
             $slot_end = clone $current;
             $slot_end->modify("+{$duration_minutes} minutes");
@@ -155,7 +161,7 @@ class Availability_Manager {
                 }
             }
             
-            $current->modify("+{$duration_minutes} minutes");
+            $current->modify("+{$slot_interval} minutes");
         }
         
         return $slots;

@@ -6,6 +6,30 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
+/* Override any pink/magenta colors from theme */
+.booking-form-container button,
+.booking-form-container .calendar-day,
+.booking-form-container .time-slot-btn,
+.booking-form-container .button-primary,
+.booking-form-container .change-btn {
+    background-color: #C8FEC2 !important;
+    color: #000000 !important;
+}
+
+.booking-form-container button:hover,
+.booking-form-container .calendar-day:hover,
+.booking-form-container .time-slot-btn:hover,
+.booking-form-container .button-primary:hover,
+.booking-form-container .change-btn:hover {
+    background-color: #AEE7A5 !important;
+    color: #000000 !important;
+}
+
+.booking-form-container .back-link {
+    background: none !important;
+    color: #000000 !important;
+}
+
 /* Header */
 .booking-header {
     text-align: center;
@@ -76,9 +100,9 @@
 }
 
 .back-link {
-    background: none;
-    border: none;
-    color: #000000;
+    background: none !important;
+    border: none !important;
+    color: #000000 !important;
     font-size: 16px;
     font-family: "Lora", Sans-serif;
     cursor: pointer;
@@ -125,7 +149,8 @@
 }
 
 .calendar-day.selected {
-    background: #AEE7A5;
+    background: #AEE7A5 !important;
+    border-color: #AEE7A5 !important;
 }
 
 .calendar-day.selected .day-name,
@@ -154,7 +179,7 @@
 /* Time Slots Grid */
 .booking-time-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
     gap: 10px;
     margin-bottom: 30px;
 }
@@ -180,8 +205,9 @@
 }
 
 .time-slot-btn.selected {
-    background: #AEE7A5;
-    color: #000000;
+    background: #AEE7A5 !important;
+    color: #000000 !important;
+    border-color: #AEE7A5 !important;
 }
 
 /* Selected Summary */
@@ -348,7 +374,8 @@
     }
     
     .booking-time-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
     }
     
     .form-grid {

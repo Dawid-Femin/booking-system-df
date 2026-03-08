@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.0.8] - 2024-03-08
+
+### Dodano
+- Sloty czasowe co 30 minut (możliwość rezerwacji np. 8:30, 9:00, 9:30)
+- Nadpisanie różowych kolorów z motywu za pomocą !important
+
+### Zmieniono
+- Godziny układają się obok siebie w grid layout (4 kolumny na mobile, auto-fill na desktop)
+- Zmieniono interwał generowania slotów z duration_minutes na 30 minut
+- Zaktualizowano przyciski w widoku potwierdzenia do stylu strony (#C8FEC2)
+- Dodano !important do wszystkich buttonów, aby nadpisać style motywu
+
+### Poprawiono
+- Usunięto różowy kolor z wybranych elementów
+- Poprawiono layout slotów czasowych (obok siebie zamiast pod sobą)
+- Zwiększono elastyczność rezerwacji (więcej dostępnych godzin)
+
 ## [1.0.7] - 2024-03-08
 
 ### Zmieniono

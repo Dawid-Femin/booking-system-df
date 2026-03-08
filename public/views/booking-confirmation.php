@@ -39,7 +39,7 @@ if (!defined('ABSPATH')) exit;
             </div>
             
             <p style="text-align: center; margin-top: 30px;">
-                <a href="<?php echo home_url(); ?>" class="button" style="display: inline-block; padding: 12px 24px; background: #0073aa; color: white; text-decoration: none; border-radius: 5px;">
+                <a href="<?php echo home_url(); ?>" class="button" style="display: inline-block; padding: 12px 24px; background-color: #C8FEC2; color: #000000; text-decoration: none; border-radius: 26px; font-family: 'Lora', Sans-serif; font-size: 16px; font-weight: 400;">
                     <?php _e('Powrót do strony głównej', 'booking-system-df'); ?>
                 </a>
             </p>
@@ -62,7 +62,7 @@ if (!defined('ABSPATH')) exit;
             </div>
             
             <p style="text-align: center; margin-top: 30px;">
-                <a href="<?php echo home_url(); ?>" class="button" style="display: inline-block; padding: 12px 24px; background: #0073aa; color: white; text-decoration: none; border-radius: 5px;">
+                <a href="<?php echo home_url(); ?>" class="button" style="display: inline-block; padding: 12px 24px; background-color: #C8FEC2; color: #000000; text-decoration: none; border-radius: 26px; font-family: 'Lora', Sans-serif; font-size: 16px; font-weight: 400;">
                     <?php _e('Powrót do strony głównej', 'booking-system-df'); ?>
                 </a>
             </p>
@@ -75,7 +75,7 @@ if (!defined('ABSPATH')) exit;
             <p><?php _e('Skontaktuj się z nami, jeśli problem będzie się powtarzał.', 'booking-system-df'); ?></p>
             
             <p style="text-align: center; margin-top: 30px;">
-                <a href="<?php echo home_url(); ?>" class="button" style="display: inline-block; padding: 12px 24px; background: #0073aa; color: white; text-decoration: none; border-radius: 5px;">
+                <a href="<?php echo home_url(); ?>" class="button" style="display: inline-block; padding: 12px 24px; background-color: #C8FEC2; color: #000000; text-decoration: none; border-radius: 26px; font-family: 'Lora', Sans-serif; font-size: 16px; font-weight: 400;">
                     <?php _e('Powrót do strony głównej', 'booking-system-df'); ?>
                 </a>
             </p>
