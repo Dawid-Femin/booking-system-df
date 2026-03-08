@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.0.9] - 2024-03-08
+
+### Dodano
+- Border 1px solid #ddd do buttonów godzin
+- Grid layout dla `.time-slots-for-date` (godziny obok siebie)
+- Pełna nazwa dnia i data w tytule kroku 2 (np. "Czwartek, 12 marca")
+- Data-attribute `data-full-date` dla buttonów dni
+
+### Zmieniono
+- Godziny wyświetlają się obok siebie w grid layout z odstępami
+- Tytuł wybranego dnia pokazuje pełną nazwę zamiast skrótu
+- Responsive grid dla mobile (4 kolumny)
+
+### Poprawiono
+- Layout slotów czasowych (grid zamiast vertical stack)
+- Czytelność wybranej daty dla użytkownika
+
 ## [1.0.8] - 2024-03-08
 
 ### Dodano

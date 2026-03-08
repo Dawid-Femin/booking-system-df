@@ -87,11 +87,15 @@ if (!defined('ABSPATH')) exit;
                                 $date_str = $current_date->format('Y-m-d');
                                 $has_slots = isset($slots_by_date[$date_str]);
                                 $day_name = $polish_days[$current_date->format('l')];
+                                $day_name_full = $polish_days_full[$current_date->format('l')];
                                 $day_num = $current_date->format('d');
+                                $month = $polish_months[$current_date->format('m')];
+                                $full_date_label = $day_name_full . ', ' . $day_num . ' ' . $month;
                                 ?>
                                 <button type="button" 
                                         class="calendar-day <?php echo $has_slots ? 'has-slots' : 'no-slots'; ?>"
                                         data-date="<?php echo esc_attr($date_str); ?>"
+                                        data-full-date="<?php echo esc_attr($full_date_label); ?>"
                                         <?php echo !$has_slots ? 'disabled' : ''; ?>>
                                     <span class="day-name"><?php echo esc_html($day_name); ?></span>
                                     <span class="day-num"><?php echo esc_html($day_num); ?></span>
@@ -188,6 +192,7 @@ jQuery(document).ready(function($) {
     // Select day from calendar
     $('.calendar-day.has-slots').on('click', function() {
         const date = $(this).data('date');
+        const fullDate = $(this).data('full-date');
         
         $('.calendar-day').removeClass('selected');
         $(this).addClass('selected');
@@ -196,10 +201,8 @@ jQuery(document).ready(function($) {
         $('.time-slots-for-date').hide();
         $(`.time-slots-for-date[data-date="${date}"]`).show();
         
-        // Update title
-        const dayText = $(this).find('.day-name').text();
-        const dayNum = $(this).find('.day-num').text();
-        $('#selected-day-title').text(`${dayText}, ${dayNum}`);
+        // Update title with full date
+        $('#selected-day-title').text(fullDate);
         
         // Show step 2
         $('#step-1').removeClass('active');

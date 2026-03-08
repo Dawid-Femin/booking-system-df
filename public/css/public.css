@@ -14,6 +14,8 @@
 .booking-form-container .change-btn {
     background-color: #C8FEC2 !important;
     color: #000000 !important;
+    border: 1px solid #ddd;
+    border-radius: 26px;
 }
 
 .booking-form-container button:hover,
@@ -184,10 +186,16 @@
     margin-bottom: 30px;
 }
 
+.time-slots-for-date {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 10px;
+}
+
 .time-slot-btn {
     padding: 14px;
     background: #C8FEC2;
-    border: none;
+    border: 1px solid #ddd;
     border-radius: 26px;
     cursor: pointer;
     font-size: 16px;
@@ -202,6 +210,7 @@
 .time-slot-btn:hover {
     background: #AEE7A5;
     transform: translateY(-2px);
+    border-color: #AEE7A5;
 }
 
 .time-slot-btn.selected {
@@ -373,7 +382,8 @@
         font-size: 14px;
     }
     
-    .booking-time-grid {
+    .booking-time-grid,
+    .time-slots-for-date {
         grid-template-columns: repeat(4, 1fr);
         gap: 8px;
     }
