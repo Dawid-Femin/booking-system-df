@@ -88,6 +88,23 @@ class Booking_System_Activator {
         
         dbDelta($sql_rules);
         
+        // Table: wp_booking_availability_slots (new - for specific dates)
+        $table_slots = $wpdb->prefix . 'booking_availability_slots';
+        $sql_slots = "CREATE TABLE $table_slots (
+            id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            date date NOT NULL,
+            start_time time NOT NULL,
+            end_time time NOT NULL,
+            is_active tinyint(1) NOT NULL DEFAULT 1,
+            created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY  (id),
+            KEY date (date),
+            KEY is_active (is_active)
+        ) ENGINE=InnoDB $charset_collate;";
+        
+        dbDelta($sql_slots);
+        
         // Table: wp_booking_blocked_periods
         $table_blocked = $wpdb->prefix . 'booking_blocked_periods';
         $sql_blocked = "CREATE TABLE $table_blocked (

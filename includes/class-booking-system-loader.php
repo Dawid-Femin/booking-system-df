@@ -32,6 +32,7 @@ class Booking_System_Loader {
         require_once BOOKING_SYSTEM_DF_PLUGIN_DIR . 'includes/models/class-patient-data.php';
         require_once BOOKING_SYSTEM_DF_PLUGIN_DIR . 'includes/models/class-payment-data.php';
         require_once BOOKING_SYSTEM_DF_PLUGIN_DIR . 'includes/models/class-availability-rule.php';
+        require_once BOOKING_SYSTEM_DF_PLUGIN_DIR . 'includes/models/class-availability-slot.php';
         require_once BOOKING_SYSTEM_DF_PLUGIN_DIR . 'includes/models/class-blocked-period.php';
         require_once BOOKING_SYSTEM_DF_PLUGIN_DIR . 'includes/models/class-time-slot.php';
     }

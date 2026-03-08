@@ -15,12 +15,50 @@ class Availability_Manager {
             return Result::failure(__('Nieprawidłowy typ konsultacji.', 'booking-system-df'));
         }
         
-        $rules = Availability_Rule::get_all_active();
+        // Try to get slots from new system first
+        $slots_data = Availability_Slot::get_by_date_range($start_date, $end_date);
         
-        if (empty($rules)) {
-            return Result::failure(__('Brak zdefiniowanych reguł dostępności.', 'booking-system-df'));
+        // If no slots in new system, fall back to old rules system
+        if (empty($slots_data)) {
+            $rules = Availability_Rule::get_all_active();
+            
+            if (empty($rules)) {
+                return Result::failure(__('Brak zdefiniowanej dostępności. Przejdź do zakładki Dostępność i zdefiniuj swój grafik.', 'booking-system-df'));
+            }
+            
+            return self::get_available_slots_from_rules($type, $start_date, $end_date, $rules);
         }
         
+        // Use new slots system
+        $timezone = new DateTimeZone('Europe/Warsaw');
+        $all_slots = array();
+        
+        foreach ($slots_data as $slot_data) {
+            $date = $slot_data->date;
+            $start_time_str = substr($slot_data->start_time, 0, 5);
+            $end_time_str = substr($slot_data->end_time, 0, 5);
+            
+            $start_time = DateTime::createFromFormat('Y-m-d H:i', $date . ' ' . $start_time_str, $timezone);
+            $end_time = DateTime::createFromFormat('Y-m-d H:i', $date . ' ' . $end_time_str, $timezone);
+            
+            if ($start_time === false || $end_time === false) {
+                continue;
+            }
+            
+            $slots = self::generate_slots_for_time_range($start_time, $end_time, $type->duration_minutes);
+            $all_slots = array_merge($all_slots, $slots);
+        }
+        
+        // Filter out blocked periods
+        $all_slots = self::filter_blocked_slots($all_slots, $start_date, $end_date);
+        
+        // Filter out already booked slots
+        $all_slots = self::filter_booked_slots($all_slots);
+        
+        return Result::success($all_slots);
+    }
+
+    private static function get_available_slots_from_rules($type, $start_date, $end_date, $rules) {
         $timezone = new DateTimeZone('Europe/Warsaw');
         $current = new DateTime($start_date, $timezone);
         $end = new DateTime($end_date, $timezone);
@@ -47,6 +85,29 @@ class Availability_Manager {
         $all_slots = self::filter_booked_slots($all_slots);
         
         return Result::success($all_slots);
+    }
+
+    private static function generate_slots_for_time_range(DateTime $start_time, DateTime $end_time, $duration_minutes) {
+        $slots = array();
+        $timezone = new DateTimeZone('Europe/Warsaw');
+        $current = clone $start_time;
+        
+        while ($current < $end_time) {
+            $slot_end = clone $current;
+            $slot_end->modify("+{$duration_minutes} minutes");
+            
+            if ($slot_end <= $end_time) {
+                // Only include future slots
+                $now = new DateTime('now', $timezone);
+                if ($current > $now) {
+                    $slots[] = new Time_Slot(clone $current, clone $slot_end);
+                }
+            }
+            
+            $current->modify("+{$duration_minutes} minutes");
+        }
+        
+        return $slots;
     }
 
     private static function generate_slots_for_day(DateTime $date, Availability_Rule $rule, $duration_minutes) {

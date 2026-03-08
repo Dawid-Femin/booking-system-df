@@ -154,7 +154,70 @@ class Booking_System_Admin {
     }
 
     public function display_availability_page() {
-        // Handle form submissions
+        // Ensure availability_slots table exists
+        global $wpdb;
+        $table_slots = $wpdb->prefix . 'booking_availability_slots';
+        
+        if ($wpdb->get_var("SHOW TABLES LIKE '$table_slots'") != $table_slots) {
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+            $charset_collate = $wpdb->get_charset_collate();
+            
+            $sql_slots = "CREATE TABLE $table_slots (
+                id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+                date date NOT NULL,
+                start_time time NOT NULL,
+                end_time time NOT NULL,
+                is_active tinyint(1) NOT NULL DEFAULT 1,
+                created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY  (id),
+                KEY date (date),
+                KEY is_active (is_active)
+            ) ENGINE=InnoDB $charset_collate;";
+            
+            dbDelta($sql_slots);
+        }
+        
+        // Handle calendar form submission
+        if (isset($_POST['save_availability_calendar'])) {
+            check_admin_referer('booking_availability_calendar_form');
+            
+            // Get all submitted slots
+            $slots = isset($_POST['slots']) ? $_POST['slots'] : array();
+            
+            // Get date range
+            $timezone = new DateTimeZone('Europe/Warsaw');
+            $today = new DateTime('now', $timezone);
+            $end_date = clone $today;
+            $end_date->modify('+14 days');
+            
+            // Delete all existing slots in this range
+            global $wpdb;
+            $table = $wpdb->prefix . 'booking_availability_slots';
+            $wpdb->query($wpdb->prepare(
+                "DELETE FROM $table WHERE date >= %s AND date <= %s",
+                $today->format('Y-m-d'),
+                $end_date->format('Y-m-d')
+            ));
+            
+            // Insert new slots
+            foreach ($slots as $date => $time_ranges) {
+                foreach ($time_ranges as $time_range) {
+                    list($start_time, $end_time) = explode('|', $time_range);
+                    
+                    $slot = new Availability_Slot();
+                    $slot->date = $date;
+                    $slot->start_time = $start_time;
+                    $slot->end_time = $end_time;
+                    $slot->is_active = 1;
+                    $slot->save();
+                }
+            }
+            
+            echo '<div class="notice notice-success"><p>' . __('Grafik został zapisany.', 'booking-system-df') . '</p></div>';
+        }
+        
+        // Handle old form submissions (for backward compatibility)
         if (isset($_POST['save_rule'])) {
             check_admin_referer('booking_availability_form');
             
@@ -192,7 +255,7 @@ class Booking_System_Admin {
             echo '<div class="notice notice-success"><p>' . __('Okres blokady został zapisany.', 'booking-system-df') . '</p></div>';
         }
         
-        include BOOKING_SYSTEM_DF_PLUGIN_DIR . 'admin/views/availability.php';
+        include BOOKING_SYSTEM_DF_PLUGIN_DIR . 'admin/views/availability-calendar.php';
     }
 
     public function display_settings_page() {
