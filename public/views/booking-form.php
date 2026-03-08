@@ -238,12 +238,12 @@ jQuery(document).ready(function($) {
         // Hide step 1 and step 2, show step 3
         $('#step-1').slideUp();
         $('#step-2').slideUp();
-        $('#step-3').slideDown();
-        
-        // Scroll to selected-summary box
-        $('html, body').animate({
-            scrollTop: $('.selected-summary').offset().top - 20
-        }, 300);
+        $('#step-3').slideDown(400, function() {
+            // Scroll to selected-summary box after animation completes
+            $('html, body').animate({
+                scrollTop: $('.selected-summary').offset().top - 20
+            }, 300);
+        });
     });
     
     // Change slot
