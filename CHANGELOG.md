@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.4] - 2024-03-08
+
+### Dodano
+- 24-godzinny bufor rezerwacji - klienci mogą rezerwować tylko terminy za minimum 24 godziny
+- Automatyczne blokowanie terminów w ciągu najbliższych 24 godzin
+
+### Zmieniono
+- `Availability_Manager` filtruje sloty, które są za mniej niż 24 godziny od obecnego czasu
+- Zarówno nowy system slotów jak i stary system reguł respektują 24-godzinny bufor
+
+### Bezpieczeństwo
+- Zapobiega rezerwacjom "na ostatnią chwilę"
+- Daje psychologowi czas na przygotowanie się do konsultacji
+
 ## [1.0.3] - 2024-03-08
 
 ### Dodano
