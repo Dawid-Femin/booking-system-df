@@ -32,6 +32,22 @@ class Payment_Handler {
         
         Booking_System_Logger::log_info('PayU webhook received', array('data' => $data));
         
+        // Verify signature if MD5 key is configured
+        $signature = $request->get_header('OpenPayu-Signature');
+        if ($signature) {
+            $is_valid = self::verify_payu_signature($body, $signature);
+            
+            if (!$is_valid) {
+                Booking_System_Logger::log_error('PayU webhook signature verification failed', array(
+                    'signature' => $signature,
+                    'body_length' => strlen($body)
+                ));
+                return new WP_REST_Response(array('error' => 'Invalid signature'), 401);
+            }
+            
+            Booking_System_Logger::log_info('PayU webhook signature verified');
+        }
+        
         if (!isset($data['order'])) {
             Booking_System_Logger::log_error('Invalid PayU webhook data');
             return new WP_REST_Response(array('error' => 'Invalid data'), 400);
@@ -53,6 +69,43 @@ class Payment_Handler {
         }
         
         return new WP_REST_Response(array('status' => 'ok'), 200);
+    }
+    
+    private static function verify_payu_signature($body, $signature_header) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'booking_settings';
+        
+        $md5_key_encrypted = $wpdb->get_var(
+            $wpdb->prepare("SELECT setting_value FROM $table WHERE setting_key = %s", 'payu_md5_key')
+        );
+        
+        if (!$md5_key_encrypted) {
+            // MD5 key not configured - skip verification
+            Booking_System_Logger::log_info('PayU MD5 key not configured - skipping signature verification');
+            return true;
+        }
+        
+        $md5_key = Encryption_Helper::decrypt($md5_key_encrypted);
+        
+        // Parse signature header: algorithm=MD5;signature=xxxxx
+        $parts = explode(';', $signature_header);
+        $signature = null;
+        
+        foreach ($parts as $part) {
+            if (strpos($part, 'signature=') === 0) {
+                $signature = substr($part, strlen('signature='));
+                break;
+            }
+        }
+        
+        if (!$signature) {
+            return false;
+        }
+        
+        // Calculate expected signature
+        $expected_signature = md5($body . $md5_key);
+        
+        return hash_equals($expected_signature, $signature);
     }
 
     public static function handle_payment_return($request) {

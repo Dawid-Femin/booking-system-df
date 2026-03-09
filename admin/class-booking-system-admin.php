@@ -270,6 +270,7 @@ class Booking_System_Admin {
                 'payu_client_id' => Encryption_Helper::encrypt(sanitize_text_field($_POST['payu_client_id'])),
                 'payu_client_secret' => Encryption_Helper::encrypt(sanitize_text_field($_POST['payu_client_secret'])),
                 'payu_pos_id' => Encryption_Helper::encrypt(sanitize_text_field($_POST['payu_pos_id'])),
+                'payu_md5_key' => Encryption_Helper::encrypt(sanitize_text_field($_POST['payu_md5_key'])),
                 'payu_sandbox' => isset($_POST['payu_sandbox']) ? '1' : '0',
                 'payu_force_on_localhost' => isset($_POST['payu_force_on_localhost']) ? '1' : '0',
                 'payu_dev_mode' => isset($_POST['payu_dev_mode']) ? '1' : '0',

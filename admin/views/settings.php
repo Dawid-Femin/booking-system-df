@@ -63,6 +63,17 @@ if (isset($settings['google_refresh_token'])) {
                 <td><input type="text" name="payu_pos_id" class="regular-text" value="<?php echo esc_attr($payu_pos_id); ?>"></td>
             </tr>
             <tr>
+                <th><label><?php _e('Drugi klucz (MD5)', 'booking-system-df'); ?></label></th>
+                <td>
+                    <input type="password" name="payu_md5_key" class="regular-text" value="<?php 
+                        if (isset($settings['payu_md5_key'])) {
+                            echo esc_attr(Encryption_Helper::decrypt($settings['payu_md5_key']->setting_value));
+                        }
+                    ?>">
+                    <p class="description"><?php _e('Klucz MD5 do weryfikacji podpisu webhooków (opcjonalny, ale zalecany)', 'booking-system-df'); ?></p>
+                </td>
+            </tr>
+            <tr>
                 <th><label><?php _e('Tryb Sandbox', 'booking-system-df'); ?></label></th>
                 <td>
                     <input type="checkbox" name="payu_sandbox" <?php checked($payu_sandbox, '1'); ?>>

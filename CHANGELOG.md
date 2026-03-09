@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.20] - 2024-03-09
+
+### Dodano
+- Pole "Drugi klucz (MD5)" w ustawieniach PayU
+- Weryfikacja podpisu webhooków PayU dla bezpieczeństwa
+- Automatyczne pomijanie weryfikacji gdy klucz MD5 nie jest skonfigurowany
+
+### Bezpieczeństwo
+- Webhooks PayU są teraz weryfikowane za pomocą podpisu MD5
+- Ochrona przed fałszywymi powiadomieniami o płatnościach
+- Używamy hash_equals() do bezpiecznego porównywania podpisów
+
 ## [1.0.19] - 2024-03-08
 
 ### Zmieniono
