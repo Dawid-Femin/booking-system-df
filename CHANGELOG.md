@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.0.21] - 2024-03-09
+
+### Dodano
+- User-Agent w nagłówkach żądań do PayU (identyfikacja aplikacji)
+- Accept: application/json w nagłówkach
+- Retry logic - automatyczne ponowienie przy błędach 403 i 5xx (do 3 prób)
+- Opóźnienie 2 sekundy między próbami
+- Szczegółowe logowanie każdej próby połączenia
+
+### Ulepszone
+- Lepsze logowanie błędów PayU (ograniczenie raw_body do 500 znaków)
+- Dodano numer próby w logach
+- SSL verification włączone jawnie
+
+### Techniczne
+- Może pomóc ominąć blokadę CloudFront przez lepszą identyfikację
+- Automatyczne ponowienie przy przejściowych błędach
+
 ## [1.0.20] - 2024-03-09
 
 ### Dodano

@@ -70,14 +70,17 @@ class PayU_Gateway {
         
         $response = wp_remote_post($url, array(
             'headers' => array(
-                'Content-Type' => 'application/x-www-form-urlencoded'
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'Accept' => 'application/json',
+                'User-Agent' => 'WordPress/' . get_bloginfo('version') . '; ' . home_url()
             ),
             'body' => array(
                 'grant_type' => 'client_credentials',
                 'client_id' => $this->client_id,
                 'client_secret' => $this->client_secret
             ),
-            'timeout' => 30
+            'timeout' => 30,
+            'sslverify' => true
         ));
 
         if (is_wp_error($response)) {
@@ -173,47 +176,93 @@ class PayU_Gateway {
                 'continueUrl' => home_url('/wp-json/booking-system-df/v1/payment-return?consultation_id=' . $consultation_id)
             );
 
-            $response = wp_remote_post($url, array(
-                'headers' => array(
-                    'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer ' . $token
-                ),
-                'body' => json_encode($order_data),
-                'timeout' => 30
-            ));
-
-            if (is_wp_error($response)) {
-                Booking_System_Logger::log_error('PayU create order failed: ' . $response->get_error_message());
-                throw new Booking_Payment_Error('Nie udało się utworzyć zamówienia w PayU.');
-            }
-
-            $response_code = wp_remote_retrieve_response_code($response);
-            $body = json_decode(wp_remote_retrieve_body($response), true);
-            $raw_body = wp_remote_retrieve_body($response);
+            // Retry logic - try up to 3 times
+            $max_attempts = 3;
+            $attempt = 0;
+            $last_error = null;
             
-            Booking_System_Logger::log_info('PayU create order response', array(
-                'code' => $response_code,
-                'body' => $body,
-                'raw_body' => $raw_body,
-                'headers' => wp_remote_retrieve_headers($response),
-                'order_data' => $order_data,
-                'api_url' => $url
-            ));
-            
-            if (!isset($body['orderId']) || !isset($body['redirectUri'])) {
+            while ($attempt < $max_attempts) {
+                $attempt++;
+                
+                Booking_System_Logger::log_info('PayU create order attempt', array(
+                    'attempt' => $attempt,
+                    'max_attempts' => $max_attempts,
+                    'api_url' => $url
+                ));
+                
+                $response = wp_remote_post($url, array(
+                    'headers' => array(
+                        'Content-Type' => 'application/json',
+                        'Accept' => 'application/json',
+                        'Authorization' => 'Bearer ' . $token,
+                        'User-Agent' => 'WordPress/' . get_bloginfo('version') . '; ' . home_url()
+                    ),
+                    'body' => json_encode($order_data),
+                    'timeout' => 30,
+                    'sslverify' => true
+                ));
+
+                if (is_wp_error($response)) {
+                    $last_error = $response->get_error_message();
+                    Booking_System_Logger::log_error('PayU create order failed (attempt ' . $attempt . '): ' . $last_error);
+                    
+                    if ($attempt < $max_attempts) {
+                        sleep(2); // Wait 2 seconds before retry
+                        continue;
+                    }
+                    
+                    throw new Booking_Payment_Error('Nie udało się utworzyć zamówienia w PayU.');
+                }
+
+                $response_code = wp_remote_retrieve_response_code($response);
+                $body = json_decode(wp_remote_retrieve_body($response), true);
+                $raw_body = wp_remote_retrieve_body($response);
+                
+                Booking_System_Logger::log_info('PayU create order response', array(
+                    'attempt' => $attempt,
+                    'code' => $response_code,
+                    'body' => $body,
+                    'raw_body' => substr($raw_body, 0, 500), // First 500 chars
+                    'headers' => wp_remote_retrieve_headers($response),
+                    'order_data' => $order_data,
+                    'api_url' => $url
+                ));
+                
+                // Success
+                if (isset($body['orderId']) && isset($body['redirectUri'])) {
+                    Booking_System_Logger::log_info('PayU order created', array(
+                        'order_id' => $body['orderId'],
+                        'consultation_id' => $consultation_id,
+                        'attempt' => $attempt
+                    ));
+
+                    return Result::success(array(
+                        'order_id' => $body['orderId'],
+                        'redirect_url' => $body['redirectUri']
+                    ));
+                }
+                
+                // Retry on 403 or 5xx errors
+                if ($response_code == 403 || $response_code >= 500) {
+                    $last_error = 'HTTP ' . $response_code;
+                    
+                    if ($attempt < $max_attempts) {
+                        Booking_System_Logger::log_info('Retrying after error', array(
+                            'code' => $response_code,
+                            'attempt' => $attempt
+                        ));
+                        sleep(2);
+                        continue;
+                    }
+                }
+                
+                // Other errors - don't retry
                 Booking_System_Logger::log_error('PayU create order response invalid', array('response' => $body));
                 throw new Booking_Payment_Error('Nieprawidłowa odpowiedź z PayU.');
             }
-
-            Booking_System_Logger::log_info('PayU order created', array(
-                'order_id' => $body['orderId'],
-                'consultation_id' => $consultation_id
-            ));
-
-            return Result::success(array(
-                'order_id' => $body['orderId'],
-                'redirect_url' => $body['redirectUri']
-            ));
+            
+            // All attempts failed
+            throw new Booking_Payment_Error('Nie udało się utworzyć zamówienia w PayU po ' . $max_attempts . ' próbach.');
 
         } catch (Exception $e) {
             Booking_System_Logger::log_error('PayU create order exception: ' . $e->getMessage(), array('critical' => true));
