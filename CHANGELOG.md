@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.26] - 2024-03-09
+
+### Poprawiono
+- Retry z nowym extOrderId po błędzie 403 (unikanie ORDER_NOT_UNIQUE)
+- Usunięto nieprawidłowe konstruowanie URL-a płatności
+- Każda próba używa unikalnego extOrderId z timestamp i numerem próby
+
 ## [1.0.25] - 2024-03-09
 
 ### Poprawiono

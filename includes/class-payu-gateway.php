@@ -176,7 +176,7 @@ class PayU_Gateway {
                 'continueUrl' => home_url('/wp-json/booking-system-df/v1/payment-return?consultation_id=' . $consultation_id)
             );
 
-            // Retry logic - try up to 3 times
+            // Retry logic - try up to 3 times with different extOrderId on 403
             $max_attempts = 3;
             $attempt = 0;
             $last_error = null;
@@ -184,10 +184,16 @@ class PayU_Gateway {
             while ($attempt < $max_attempts) {
                 $attempt++;
                 
+                // On retry after 403, use a different extOrderId to avoid ORDER_NOT_UNIQUE
+                if ($attempt > 1) {
+                    $order_data['extOrderId'] = 'consultation_' . $consultation_id . '_' . time() . '_' . $attempt;
+                }
+                
                 Booking_System_Logger::log_info('PayU create order attempt', array(
                     'attempt' => $attempt,
                     'max_attempts' => $max_attempts,
-                    'api_url' => $url
+                    'api_url' => $url,
+                    'extOrderId' => $order_data['extOrderId']
                 ));
                 
                 $response = wp_remote_post($url, array(
@@ -228,63 +234,6 @@ class PayU_Gateway {
                     'api_url' => $url
                 ));
                 
-                // Order already exists (from retry) - fetch redirectUri by calling POST again
-                // Check this FIRST before checking for redirectUri
-                if (isset($body['status']['codeLiteral']) && $body['status']['codeLiteral'] === 'ORDER_NOT_UNIQUE' && isset($body['orderId'])) {
-                    Booking_System_Logger::log_info('PayU order already exists, attempting to get redirectUri', array(
-                        'order_id' => $body['orderId'],
-                        'consultation_id' => $consultation_id,
-                        'attempt' => $attempt
-                    ));
-                    
-                    // Try one more POST with same data - PayU might return redirectUri
-                    // Use a slightly modified extOrderId to force a new response
-                    $retry_order_data = $order_data;
-                    $retry_order_data['extOrderId'] = $order_data['extOrderId'] . '_retry';
-                    
-                    $retry_response = wp_remote_post($url, array(
-                        'headers' => array(
-                            'Content-Type' => 'application/json',
-                            'Accept' => 'application/json',
-                            'Authorization' => 'Bearer ' . $token,
-                            'User-Agent' => 'WordPress/' . get_bloginfo('version') . '; ' . home_url()
-                        ),
-                        'body' => json_encode($retry_order_data),
-                        'timeout' => 30,
-                        'sslverify' => true
-                    ));
-                    
-                    if (!is_wp_error($retry_response)) {
-                        $retry_body = json_decode(wp_remote_retrieve_body($retry_response), true);
-                        
-                        if (isset($retry_body['redirectUri'])) {
-                            Booking_System_Logger::log_info('PayU redirectUri obtained from retry', array(
-                                'order_id' => $retry_body['orderId'],
-                                'redirect_uri' => $retry_body['redirectUri']
-                            ));
-                            
-                            return Result::success(array(
-                                'order_id' => $retry_body['orderId'],
-                                'redirect_url' => $retry_body['redirectUri']
-                            ));
-                        }
-                    }
-                    
-                    // If retry didn't work, use the original orderId with a constructed URL
-                    // Based on PayU documentation, the payment page URL format is:
-                    // https://secure.payu.com/pl/standard/user/oauth/authorize?order_id={orderId}
-                    Booking_System_Logger::log_warning('Could not fetch redirectUri, constructing payment URL', array(
-                        'order_id' => $body['orderId']
-                    ));
-                    
-                    $payment_url = $this->get_api_url() . '/pl/standard/user/oauth/authorize?order_id=' . $body['orderId'];
-                    
-                    return Result::success(array(
-                        'order_id' => $body['orderId'],
-                        'redirect_url' => $payment_url
-                    ));
-                }
-                
                 // Success - new order created
                 if (isset($body['orderId']) && isset($body['redirectUri'])) {
                     Booking_System_Logger::log_info('PayU order created', array(
@@ -299,12 +248,12 @@ class PayU_Gateway {
                     ));
                 }
                 
-                // Retry on 403 or 5xx errors
+                // Retry on 403 or 5xx errors with a new extOrderId
                 if ($response_code == 403 || $response_code >= 500) {
                     $last_error = 'HTTP ' . $response_code;
                     
                     if ($attempt < $max_attempts) {
-                        Booking_System_Logger::log_info('Retrying after error', array(
+                        Booking_System_Logger::log_info('Retrying with new extOrderId after error', array(
                             'code' => $response_code,
                             'attempt' => $attempt
                         ));
