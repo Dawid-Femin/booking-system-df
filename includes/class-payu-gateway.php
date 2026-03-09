@@ -231,14 +231,44 @@ class PayU_Gateway {
                 // Order already exists (from retry) - use existing order
                 // Check this FIRST before checking for redirectUri
                 if (isset($body['status']['codeLiteral']) && $body['status']['codeLiteral'] === 'ORDER_NOT_UNIQUE' && isset($body['orderId'])) {
-                    Booking_System_Logger::log_info('PayU order already exists, using existing order', array(
+                    Booking_System_Logger::log_info('PayU order already exists, fetching redirectUri', array(
                         'order_id' => $body['orderId'],
                         'consultation_id' => $consultation_id,
                         'attempt' => $attempt
                     ));
                     
-                    // Construct payment URL
-                    $payment_url = $this->get_api_url() . '/pay/' . $body['orderId'];
+                    // Fetch order details to get redirectUri
+                    $order_details_url = $this->get_api_url() . '/api/v2_1/orders/' . $body['orderId'];
+                    $order_response = wp_remote_get($order_details_url, array(
+                        'headers' => array(
+                            'Authorization' => 'Bearer ' . $token,
+                            'Accept' => 'application/json'
+                        ),
+                        'timeout' => 30
+                    ));
+                    
+                    if (!is_wp_error($order_response)) {
+                        $order_body = json_decode(wp_remote_retrieve_body($order_response), true);
+                        
+                        if (isset($order_body['redirectUri'])) {
+                            Booking_System_Logger::log_info('PayU redirectUri obtained from existing order', array(
+                                'order_id' => $body['orderId'],
+                                'redirect_uri' => $order_body['redirectUri']
+                            ));
+                            
+                            return Result::success(array(
+                                'order_id' => $body['orderId'],
+                                'redirect_url' => $order_body['redirectUri']
+                            ));
+                        }
+                    }
+                    
+                    // Fallback: construct payment URL manually
+                    Booking_System_Logger::log_warning('Could not fetch redirectUri, using fallback URL', array(
+                        'order_id' => $body['orderId']
+                    ));
+                    
+                    $payment_url = $this->get_api_url() . '/api/v2_1/orders/' . $body['orderId'];
                     
                     return Result::success(array(
                         'order_id' => $body['orderId'],

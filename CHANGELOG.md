@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.24] - 2024-03-09
+
+### Poprawiono
+- Pobieranie redirectUri z API PayU dla istniejących zamówień (ORDER_NOT_UNIQUE)
+- Fallback do alternatywnego URL gdy redirectUri nie jest dostępne
+- Poprawny URL przekierowania do strony płatności PayU
+
 ## [1.0.23] - 2024-03-09
 
 ### Poprawiono
