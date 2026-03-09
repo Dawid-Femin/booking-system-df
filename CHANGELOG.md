@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.25] - 2024-03-09
+
+### Poprawiono
+- Nowa strategia dla ORDER_NOT_UNIQUE - utworzenie nowego zamówienia z _retry suffix
+- Fallback do konstruowanego URL: /pl/standard/user/oauth/authorize?order_id={orderId}
+- Lepsze logowanie procesu pobierania redirectUri
+
 ## [1.0.24] - 2024-03-09
 
 ### Poprawiono
