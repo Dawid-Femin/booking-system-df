@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.27] - 2024-03-09
+
+### Dodano
+- Nagłówki Origin i Referer do requestów PayU (może pomóc z CloudFront)
+- HTTP version 1.1 jawnie ustawiony
+- Logowanie IP serwera dla debugowania
+- Rozszerzone logowanie nagłówków requestu
+
+### Techniczne
+- Próba obejścia blokady CloudFront przez dodatkowe nagłówki
+
 ## [1.0.26] - 2024-03-09
 
 ### Poprawiono

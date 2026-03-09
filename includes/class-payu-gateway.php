@@ -193,7 +193,8 @@ class PayU_Gateway {
                     'attempt' => $attempt,
                     'max_attempts' => $max_attempts,
                     'api_url' => $url,
-                    'extOrderId' => $order_data['extOrderId']
+                    'extOrderId' => $order_data['extOrderId'],
+                    'server_ip' => $this->get_server_ip()
                 ));
                 
                 $response = wp_remote_post($url, array(
@@ -201,11 +202,14 @@ class PayU_Gateway {
                         'Content-Type' => 'application/json',
                         'Accept' => 'application/json',
                         'Authorization' => 'Bearer ' . $token,
-                        'User-Agent' => 'WordPress/' . get_bloginfo('version') . '; ' . home_url()
+                        'User-Agent' => 'WordPress/' . get_bloginfo('version') . '; ' . home_url(),
+                        'Origin' => home_url(),
+                        'Referer' => home_url()
                     ),
                     'body' => json_encode($order_data),
                     'timeout' => 30,
-                    'sslverify' => true
+                    'sslverify' => true,
+                    'httpversion' => '1.1'
                 ));
 
                 if (is_wp_error($response)) {
@@ -229,7 +233,14 @@ class PayU_Gateway {
                     'code' => $response_code,
                     'body' => $body,
                     'raw_body' => substr($raw_body, 0, 500), // First 500 chars
-                    'headers' => wp_remote_retrieve_headers($response),
+                    'headers' => wp_remote_retrieve_headers($response)->getAll(),
+                    'request_headers' => array(
+                        'Content-Type' => 'application/json',
+                        'Accept' => 'application/json',
+                        'User-Agent' => 'WordPress/' . get_bloginfo('version') . '; ' . home_url(),
+                        'Origin' => home_url(),
+                        'Referer' => home_url()
+                    ),
                     'order_data' => $order_data,
                     'api_url' => $url
                 ));
@@ -375,5 +386,11 @@ class PayU_Gateway {
         }
         
         return filter_var($ip, FILTER_VALIDATE_IP) ? $ip : '127.0.0.1';
+    }
+    
+    private function get_server_ip() {
+        // Get server's outgoing IP
+        $ip = file_get_contents('https://api.ipify.org');
+        return $ip ? $ip : 'unknown';
     }
 }
