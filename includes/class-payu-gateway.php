@@ -76,7 +76,7 @@ class PayU_Gateway {
             ),
             'body' => array(
                 'grant_type' => 'client_credentials',
-                'client_id' => $this->client_id,
+                'client_id' => $this->pos_id,  // MUST match merchantPosId in order
                 'client_secret' => $this->client_secret
             ),
             'timeout' => 30,

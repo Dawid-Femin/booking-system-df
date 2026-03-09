@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.28] - 2024-03-09
+
+### Poprawiono
+- **KRYTYCZNE**: OAuth używa teraz pos_id zamiast client_id
+- Zgodność z wymaganiem PayU: POS ID w OAuth musi być identyczny z merchantPosId w zamówieniu
+- To prawdopodobnie rozwiązuje błąd 403 CloudFront
+
+### Techniczne
+- Błąd 403 był spowodowany niezgodnością POS ID między OAuth a zamówieniem
+- PayU zwraca INVALID_AUTH_FOR_THIS_ORDER gdy POS ID się nie zgadzają
+
 ## [1.0.27] - 2024-03-09
 
 ### Dodano
