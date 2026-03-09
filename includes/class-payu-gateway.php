@@ -228,21 +228,8 @@ class PayU_Gateway {
                     'api_url' => $url
                 ));
                 
-                // Success
-                if (isset($body['orderId']) && isset($body['redirectUri'])) {
-                    Booking_System_Logger::log_info('PayU order created', array(
-                        'order_id' => $body['orderId'],
-                        'consultation_id' => $consultation_id,
-                        'attempt' => $attempt
-                    ));
-
-                    return Result::success(array(
-                        'order_id' => $body['orderId'],
-                        'redirect_url' => $body['redirectUri']
-                    ));
-                }
-                
                 // Order already exists (from retry) - use existing order
+                // Check this FIRST before checking for redirectUri
                 if (isset($body['status']['codeLiteral']) && $body['status']['codeLiteral'] === 'ORDER_NOT_UNIQUE' && isset($body['orderId'])) {
                     Booking_System_Logger::log_info('PayU order already exists, using existing order', array(
                         'order_id' => $body['orderId'],
@@ -256,6 +243,20 @@ class PayU_Gateway {
                     return Result::success(array(
                         'order_id' => $body['orderId'],
                         'redirect_url' => $payment_url
+                    ));
+                }
+                
+                // Success - new order created
+                if (isset($body['orderId']) && isset($body['redirectUri'])) {
+                    Booking_System_Logger::log_info('PayU order created', array(
+                        'order_id' => $body['orderId'],
+                        'consultation_id' => $consultation_id,
+                        'attempt' => $attempt
+                    ));
+
+                    return Result::success(array(
+                        'order_id' => $body['orderId'],
+                        'redirect_url' => $body['redirectUri']
                     ));
                 }
                 

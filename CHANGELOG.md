@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.23] - 2024-03-09
+
+### Poprawiono
+- Kolejność sprawdzania odpowiedzi PayU - ORDER_NOT_UNIQUE sprawdzane przed innymi błędami
+- Eliminacja fałszywych błędów gdy zamówienie już istnieje
+
 ## [1.0.22] - 2024-03-09
 
 ### Poprawiono
