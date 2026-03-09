@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.22] - 2024-03-09
+
+### Poprawiono
+- Obsługa błędu ORDER_NOT_UNIQUE z PayU (gdy retry utworzył zamówienie)
+- Używanie istniejącego orderId gdy zamówienie już istnieje
+- Konstrukcja payment URL dla istniejących zamówień
+
+### Techniczne
+- Retry logic działa! Pierwsza próba 403, druga próba sukces
+- PayU produkcyjne API działa z retry
+
 ## [1.0.21] - 2024-03-09
 
 ### Dodano

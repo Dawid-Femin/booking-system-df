@@ -242,6 +242,23 @@ class PayU_Gateway {
                     ));
                 }
                 
+                // Order already exists (from retry) - use existing order
+                if (isset($body['status']['codeLiteral']) && $body['status']['codeLiteral'] === 'ORDER_NOT_UNIQUE' && isset($body['orderId'])) {
+                    Booking_System_Logger::log_info('PayU order already exists, using existing order', array(
+                        'order_id' => $body['orderId'],
+                        'consultation_id' => $consultation_id,
+                        'attempt' => $attempt
+                    ));
+                    
+                    // Construct payment URL
+                    $payment_url = $this->get_api_url() . '/pay/' . $body['orderId'];
+                    
+                    return Result::success(array(
+                        'order_id' => $body['orderId'],
+                        'redirect_url' => $payment_url
+                    ));
+                }
+                
                 // Retry on 403 or 5xx errors
                 if ($response_code == 403 || $response_code >= 500) {
                     $last_error = 'HTTP ' . $response_code;
