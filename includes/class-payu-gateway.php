@@ -200,16 +200,11 @@ class PayU_Gateway {
                 $response = wp_remote_post($url, array(
                     'headers' => array(
                         'Content-Type' => 'application/json',
-                        'Accept' => 'application/json',
-                        'Authorization' => 'Bearer ' . $token,
-                        'User-Agent' => 'WordPress/' . get_bloginfo('version') . '; ' . home_url(),
-                        'Origin' => home_url(),
-                        'Referer' => home_url()
+                        'Authorization' => 'Bearer ' . $token
                     ),
                     'body' => json_encode($order_data),
                     'timeout' => 30,
-                    'sslverify' => true,
-                    'httpversion' => '1.1'
+                    'sslverify' => true
                 ));
 
                 if (is_wp_error($response)) {

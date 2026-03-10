@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.30] - 2024-03-10
+
+### Poprawiono
+- Uproszczono nagłówki HTTP do minimum wymaganego przez PayU API
+- Usunięto User-Agent, Origin, Referer, Accept - mogły powodować blokadę CloudFront
+- Pozostawiono tylko Content-Type i Authorization zgodnie z dokumentacją
+
+### Techniczne
+- CloudFront może blokować requesty z niestandardowymi nagłówkami
+- Minimalistyczne nagłówki mogą ominąć WAF rules
+
 ## [1.0.29] - 2024-03-10
 
 ### Poprawiono
