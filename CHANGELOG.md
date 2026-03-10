@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.33] - 2024-03-10
+
+### Poprawiono
+- Dodano nagłówki X-Forwarded-For i X-Real-IP z IP klienta
+- CloudFront może sprawdzać czy IP requestu pasuje do customerIp
+- Symulacja requestu z IP klienta zamiast serwera
+
+### Techniczne
+- X-Forwarded-For: 91.150.182.117 (IP klienta)
+- X-Real-IP: 91.150.182.117 (IP klienta)
+- Może ominąć blokadę IP serwera
+
 ## [1.0.32] - 2024-03-10
 
 ### Poprawiono
