@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.34] - 2024-03-10
+
+### Poprawiono
+- **KRYTYCZNE**: Naprawiono logowanie request headers (pokazywały stare wartości)
+- Dodano X-Forwarded-For i X-Real-IP z IP klienta
+- Dodano user-agent parameter do wp_remote_post (force override)
+- Teraz logi pokazują faktycznie wysyłane nagłówki
+
+### Techniczne
+- WordPress może nadpisywać User-Agent - dodano force override
+- Logi teraz pokazują prawdziwe nagłówki z PostmanRuntime/7.51.0
+
 ## [1.0.33] - 2024-03-10
 
 ### Poprawiono
