@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.29] - 2024-03-10
+
+### Poprawiono
+- **KRYTYCZNE**: Obsługa błędu 403 CloudFront z PayU
+- Automatyczne pobieranie zamówienia po extOrderId gdy PayU zwraca 403
+- PayU Support potwierdził że zamówienia są tworzone mimo błędu 403
+- Implementacja retrieve_order_by_ext_id() do pobierania redirectUri
+- Konstrukcja payment URL gdy redirectUri nie jest dostępne
+
+### Techniczne
+- Zamówienia są tworzone na serwerach PayU mimo błędu 403 CloudFront
+- Nowa strategia: próba utworzenia → 403 → pobierz zamówienie → przekieruj
+- Fallback URL: /api/v2_1/orders/{orderId}/pay
+
 ## [1.0.28] - 2024-03-09
 
 ### Poprawiono

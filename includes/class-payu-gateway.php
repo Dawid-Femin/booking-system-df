@@ -245,7 +245,7 @@ class PayU_Gateway {
                     'api_url' => $url
                 ));
                 
-                // Success - new order created
+                // Success - new order created with redirectUri
                 if (isset($body['orderId']) && isset($body['redirectUri'])) {
                     Booking_System_Logger::log_info('PayU order created', array(
                         'order_id' => $body['orderId'],
@@ -259,12 +259,50 @@ class PayU_Gateway {
                     ));
                 }
                 
-                // Retry on 403 or 5xx errors with a new extOrderId
-                if ($response_code == 403 || $response_code >= 500) {
+                // Handle 403 CloudFront error - order may have been created despite error response
+                // According to PayU Support, orders ARE being created even when 403 is returned
+                if ($response_code == 403) {
+                    Booking_System_Logger::log_info('Got 403 CloudFront - attempting to retrieve order', array(
+                        'attempt' => $attempt,
+                        'extOrderId' => $order_data['extOrderId']
+                    ));
+                    
+                    // Wait a moment for order to be fully created on PayU side
+                    sleep(1);
+                    
+                    // Try to retrieve the order using extOrderId
+                    $retrieve_result = $this->retrieve_order_by_ext_id($order_data['extOrderId'], $token);
+                    
+                    if ($retrieve_result->is_success()) {
+                        $order_info = $retrieve_result->get_data();
+                        
+                        Booking_System_Logger::log_info('Successfully retrieved order after 403', array(
+                            'order_id' => $order_info['orderId'],
+                            'status' => $order_info['status']
+                        ));
+                        
+                        return Result::success(array(
+                            'order_id' => $order_info['orderId'],
+                            'redirect_url' => $order_info['redirectUri']
+                        ));
+                    }
+                    
+                    // If retrieval failed and we have more attempts, retry with new extOrderId
+                    if ($attempt < $max_attempts) {
+                        Booking_System_Logger::log_info('Order retrieval failed, retrying with new extOrderId', array(
+                            'attempt' => $attempt
+                        ));
+                        sleep(2);
+                        continue;
+                    }
+                }
+                
+                // Retry on 5xx errors with a new extOrderId
+                if ($response_code >= 500) {
                     $last_error = 'HTTP ' . $response_code;
                     
                     if ($attempt < $max_attempts) {
-                        Booking_System_Logger::log_info('Retrying with new extOrderId after error', array(
+                        Booking_System_Logger::log_info('Retrying with new extOrderId after 5xx error', array(
                             'code' => $response_code,
                             'attempt' => $attempt
                         ));
@@ -283,6 +321,60 @@ class PayU_Gateway {
 
         } catch (Exception $e) {
             Booking_System_Logger::log_error('PayU create order exception: ' . $e->getMessage(), array('critical' => true));
+            return Result::failure($e->getMessage());
+        }
+    }
+
+    private function retrieve_order_by_ext_id($ext_order_id, $token) {
+        try {
+            $url = $this->get_api_url() . '/api/v2_1/orders/' . urlencode($ext_order_id);
+            
+            Booking_System_Logger::log_info('Retrieving order by extOrderId', array(
+                'ext_order_id' => $ext_order_id,
+                'url' => $url
+            ));
+            
+            $response = wp_remote_get($url, array(
+                'headers' => array(
+                    'Authorization' => 'Bearer ' . $token,
+                    'Accept' => 'application/json'
+                ),
+                'timeout' => 30,
+                'sslverify' => true
+            ));
+
+            if (is_wp_error($response)) {
+                Booking_System_Logger::log_error('Failed to retrieve order: ' . $response->get_error_message());
+                return Result::failure('Nie udało się pobrać zamówienia.');
+            }
+
+            $response_code = wp_remote_retrieve_response_code($response);
+            $body = json_decode(wp_remote_retrieve_body($response), true);
+            
+            Booking_System_Logger::log_info('Retrieve order response', array(
+                'code' => $response_code,
+                'body' => $body
+            ));
+            
+            if ($response_code != 200 || !isset($body['orders'][0])) {
+                return Result::failure('Zamówienie nie zostało znalezione.');
+            }
+
+            $order = $body['orders'][0];
+            
+            // Construct redirectUri if not provided
+            $redirect_uri = isset($order['redirectUri']) 
+                ? $order['redirectUri']
+                : $this->get_api_url() . '/api/v2_1/orders/' . $order['orderId'] . '/pay';
+            
+            return Result::success(array(
+                'orderId' => $order['orderId'],
+                'status' => $order['status'],
+                'redirectUri' => $redirect_uri
+            ));
+
+        } catch (Exception $e) {
+            Booking_System_Logger::log_error('Retrieve order exception: ' . $e->getMessage());
             return Result::failure($e->getMessage());
         }
     }
