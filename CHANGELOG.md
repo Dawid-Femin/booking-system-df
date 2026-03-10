@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.31] - 2024-03-10
+
+### Poprawiono
+- Dodano nagłówki Accept i User-Agent (jak w Postmanie)
+- User-Agent: BookingSystem/1.0 (prosty, bez WordPress w nazwie)
+- Accept: */* (akceptuje wszystkie typy odpowiedzi)
+
+### Techniczne
+- Test z Postmana działa - próba replikacji nagłówków
+- CloudFront może wymagać User-Agent header
+
 ## [1.0.30] - 2024-03-10
 
 ### Poprawiono
