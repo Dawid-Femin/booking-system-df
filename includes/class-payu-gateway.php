@@ -202,7 +202,9 @@ class PayU_Gateway {
                         'Content-Type' => 'application/json',
                         'Authorization' => 'Bearer ' . $token,
                         'Accept' => '*/*',
-                        'User-Agent' => 'BookingSystem/1.0'
+                        'Accept-Encoding' => 'gzip, deflate, br',
+                        'Connection' => 'keep-alive',
+                        'User-Agent' => 'PostmanRuntime/7.51.0'
                     ),
                     'body' => json_encode($order_data),
                     'timeout' => 30,

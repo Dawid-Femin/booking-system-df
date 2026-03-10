@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.32] - 2024-03-10
+
+### Poprawiono
+- **KRYTYCZNE**: Pełna replikacja nagłówków z Postmana
+- User-Agent: PostmanRuntime/7.51.0 (dokładnie jak w Postmanie)
+- Accept-Encoding: gzip, deflate, br
+- Connection: keep-alive
+- Accept: */*
+
+### Techniczne
+- Postman działa z tymi nagłówkami - próba 1:1 replikacji
+- CloudFront może sprawdzać User-Agent
+
 ## [1.0.31] - 2024-03-10
 
 ### Poprawiono
