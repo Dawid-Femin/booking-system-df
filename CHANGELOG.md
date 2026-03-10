@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.35] - 2024-03-11
+
+### Poprawiono
+- **KRYTYCZNE**: Naprawiono błąd w logowaniu - logi pokazywały hardcoded stare nagłówki zamiast rzeczywistych
+- Dodano X-Forwarded-For i X-Real-IP do faktycznych nagłówków requestu (nie tylko do logów)
+- Dodano user-agent parameter do wp_remote_post dla force override
+- Teraz request faktycznie wysyła PostmanRuntime/7.51.0 i IP klienta
+
+### Techniczne
+- Logi teraz pokazują rzeczywiste wysłane nagłówki ($headers zamiast hardcoded array)
+- Nagłówki X-Forwarded-For i X-Real-IP dodane do $headers przed wysłaniem requestu
+
 ## [1.0.34] - 2024-03-10
 
 ### Poprawiono
