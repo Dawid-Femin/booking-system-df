@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.0.37] - 2024-03-11
+
+### Poprawiono
+- **KRYTYCZNE**: Znaleziono prawdziwą przyczynę błędu 403 CloudFront!
+- PayU API zwraca 302 redirect z Location header (redirectUri)
+- WordPress wp_remote_post domyślnie podąża za redirectem → GET na stronę płatności → CloudFront blokuje 403
+- Postman NIE podąża za redirectami POST, dlatego z Postmana działało
+- Dodano `'redirection' => 0` - WordPress nie podąża za 302, zwraca Location header
+- Dodano obsługę odpowiedzi 302 - wyciąganie orderId i redirectUri z odpowiedzi
+- Lepszy komunikat błędu z kodem HTTP
+
+### Techniczne
+- Root cause: wp_remote_post follow redirect (domyślnie redirection=5)
+- PayU: POST /orders → 302 + Location: redirectUri + JSON body z orderId
+- WordPress: POST → 302 → GET (follow redirect) → CloudFront → 403
+- Fix: redirection=0 → dostajemy 302 z Location header → sukces
+
 ## [1.0.36] - 2024-03-11
 
 ### Poprawiono

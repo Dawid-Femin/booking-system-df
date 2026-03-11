@@ -215,7 +215,8 @@ class PayU_Gateway {
                     'body' => json_encode($order_data),
                     'timeout' => 30,
                     'sslverify' => true,
-                    'user-agent' => 'PostmanRuntime/7.51.0' // Force override
+                    'redirection' => 0, // CRITICAL: Don't follow 302 redirect - PayU returns redirectUri in Location header
+                    'user-agent' => 'PostmanRuntime/7.51.0'
                 ));
 
                 if (is_wp_error($response)) {
@@ -245,7 +246,41 @@ class PayU_Gateway {
                     'api_url' => $url
                 ));
                 
-                // Success - new order created
+                // Success - PayU returns 302 with Location header (redirectUri) and JSON body with orderId
+                if ($response_code == 302 || $response_code == 301) {
+                    $location = wp_remote_retrieve_header($response, 'location');
+                    $order_id = isset($body['orderId']) ? $body['orderId'] : null;
+                    
+                    if ($location && $order_id) {
+                        Booking_System_Logger::log_info('PayU order created (302 redirect)', array(
+                            'order_id' => $order_id,
+                            'redirect_url' => $location,
+                            'consultation_id' => $consultation_id,
+                            'attempt' => $attempt
+                        ));
+
+                        return Result::success(array(
+                            'order_id' => $order_id,
+                            'redirect_url' => $location
+                        ));
+                    }
+                    
+                    // If we got 302 but no orderId in body, try to extract from Location
+                    if ($location) {
+                        Booking_System_Logger::log_info('PayU 302 redirect without orderId in body', array(
+                            'location' => $location,
+                            'body' => $body,
+                            'attempt' => $attempt
+                        ));
+                        
+                        return Result::success(array(
+                            'order_id' => $order_data['extOrderId'],
+                            'redirect_url' => $location
+                        ));
+                    }
+                }
+                
+                // Success - new order created (200/201 with JSON)
                 if (isset($body['orderId']) && isset($body['redirectUri'])) {
                     Booking_System_Logger::log_info('PayU order created', array(
                         'order_id' => $body['orderId'],
@@ -308,8 +343,11 @@ class PayU_Gateway {
                 }
                 
                 // Other errors - don't retry
-                Booking_System_Logger::log_error('PayU create order response invalid', array('response' => $body));
-                throw new Booking_Payment_Error('Nieprawidłowa odpowiedź z PayU.');
+                Booking_System_Logger::log_error('PayU create order response invalid', array(
+                    'response' => $body,
+                    'response_code' => $response_code
+                ));
+                throw new Booking_Payment_Error('Nieprawidłowa odpowiedź z PayU (kod: ' . $response_code . ').');
             }
             
             // All attempts failed
