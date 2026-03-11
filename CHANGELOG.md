@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.39] - 2024-03-11
+
+### Poprawiono
+- Przywrócono prawidłowy sandbox URL: secure.snd.payu.com (merch-prod to panel admina, nie API)
+- Usunięto trailing slash z URL sandbox (powodował podwójny // w ścieżce API)
+
 ## [1.0.38] - 2024-03-11
 
 ### Poprawiono
