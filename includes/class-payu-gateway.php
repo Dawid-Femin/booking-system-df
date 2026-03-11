@@ -72,7 +72,7 @@ class PayU_Gateway {
             'headers' => array(
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'Accept' => 'application/json',
-                'User-Agent' => 'WordPress/' . get_bloginfo('version') . '; ' . home_url()
+                'User-Agent' => 'PostmanRuntime/7.51.0'
             ),
             'body' => array(
                 'grant_type' => 'client_credentials',
@@ -80,7 +80,8 @@ class PayU_Gateway {
                 'client_secret' => $this->client_secret
             ),
             'timeout' => 30,
-            'sslverify' => true
+            'sslverify' => true,
+            'user-agent' => 'PostmanRuntime/7.51.0' // Force override
         ));
 
         if (is_wp_error($response)) {
@@ -197,18 +198,24 @@ class PayU_Gateway {
                     'server_ip' => $this->get_server_ip()
                 ));
                 
+                // Prepare headers exactly as Postman sends them
+                $headers = array(
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $token,
+                    'Accept' => '*/*',
+                    'Accept-Encoding' => 'gzip, deflate, br',
+                    'Connection' => 'keep-alive',
+                    'User-Agent' => 'PostmanRuntime/7.51.0',
+                    'X-Forwarded-For' => $order_data['customerIp'],
+                    'X-Real-IP' => $order_data['customerIp']
+                );
+                
                 $response = wp_remote_post($url, array(
-                    'headers' => array(
-                        'Content-Type' => 'application/json',
-                        'Authorization' => 'Bearer ' . $token,
-                        'Accept' => '*/*',
-                        'Accept-Encoding' => 'gzip, deflate, br',
-                        'Connection' => 'keep-alive',
-                        'User-Agent' => 'PostmanRuntime/7.51.0'
-                    ),
+                    'headers' => $headers,
                     'body' => json_encode($order_data),
                     'timeout' => 30,
-                    'sslverify' => true
+                    'sslverify' => true,
+                    'user-agent' => 'PostmanRuntime/7.51.0' // Force override
                 ));
 
                 if (is_wp_error($response)) {
@@ -232,19 +239,13 @@ class PayU_Gateway {
                     'code' => $response_code,
                     'body' => $body,
                     'raw_body' => substr($raw_body, 0, 500), // First 500 chars
-                    'headers' => wp_remote_retrieve_headers($response)->getAll(),
-                    'request_headers' => array(
-                        'Content-Type' => 'application/json',
-                        'Accept' => 'application/json',
-                        'User-Agent' => 'WordPress/' . get_bloginfo('version') . '; ' . home_url(),
-                        'Origin' => home_url(),
-                        'Referer' => home_url()
-                    ),
+                    'response_headers' => wp_remote_retrieve_headers($response)->getAll(),
+                    'request_headers' => $headers, // Log actual headers sent
                     'order_data' => $order_data,
                     'api_url' => $url
                 ));
                 
-                // Success - new order created with redirectUri
+                // Success - new order created
                 if (isset($body['orderId']) && isset($body['redirectUri'])) {
                     Booking_System_Logger::log_info('PayU order created', array(
                         'order_id' => $body['orderId'],
@@ -259,17 +260,14 @@ class PayU_Gateway {
                 }
                 
                 // Handle 403 CloudFront error - order may have been created despite error response
-                // According to PayU Support, orders ARE being created even when 403 is returned
                 if ($response_code == 403) {
                     Booking_System_Logger::log_info('Got 403 CloudFront - attempting to retrieve order', array(
                         'attempt' => $attempt,
                         'extOrderId' => $order_data['extOrderId']
                     ));
                     
-                    // Wait a moment for order to be fully created on PayU side
                     sleep(1);
                     
-                    // Try to retrieve the order using extOrderId
                     $retrieve_result = $this->retrieve_order_by_ext_id($order_data['extOrderId'], $token);
                     
                     if ($retrieve_result->is_success()) {
@@ -286,7 +284,6 @@ class PayU_Gateway {
                         ));
                     }
                     
-                    // If retrieval failed and we have more attempts, retry with new extOrderId
                     if ($attempt < $max_attempts) {
                         Booking_System_Logger::log_info('Order retrieval failed, retrying with new extOrderId', array(
                             'attempt' => $attempt
@@ -296,7 +293,7 @@ class PayU_Gateway {
                     }
                 }
                 
-                // Retry on 5xx errors with a new extOrderId
+                // Retry on 5xx errors
                 if ($response_code >= 500) {
                     $last_error = 'HTTP ' . $response_code;
                     
@@ -336,10 +333,12 @@ class PayU_Gateway {
             $response = wp_remote_get($url, array(
                 'headers' => array(
                     'Authorization' => 'Bearer ' . $token,
-                    'Accept' => 'application/json'
+                    'Accept' => 'application/json',
+                    'User-Agent' => 'PostmanRuntime/7.51.0'
                 ),
                 'timeout' => 30,
-                'sslverify' => true
+                'sslverify' => true,
+                'user-agent' => 'PostmanRuntime/7.51.0' // Force override
             ));
 
             if (is_wp_error($response)) {
@@ -361,7 +360,6 @@ class PayU_Gateway {
 
             $order = $body['orders'][0];
             
-            // Construct redirectUri if not provided
             $redirect_uri = isset($order['redirectUri']) 
                 ? $order['redirectUri']
                 : $this->get_api_url() . '/api/v2_1/orders/' . $order['orderId'] . '/pay';
@@ -480,7 +478,6 @@ class PayU_Gateway {
     }
     
     private function get_server_ip() {
-        // Get server's outgoing IP
         $ip = file_get_contents('https://api.ipify.org');
         return $ip ? $ip : 'unknown';
     }

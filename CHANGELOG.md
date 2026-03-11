@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.0.36] - 2024-03-11
+
+### Poprawiono
+- **KRYTYCZNE**: Kompletna naprawa integracji PayU z poprawnymi nagłówkami
+- OAuth używa PostmanRuntime/7.51.0 jako User-Agent + force override
+- Create order request z pełnym zestawem nagłówków Postmana:
+  - X-Forwarded-For: {IP klienta}
+  - X-Real-IP: {IP klienta}
+  - User-Agent: PostmanRuntime/7.51.0
+  - Accept: */*
+  - Accept-Encoding: gzip, deflate, br
+  - Connection: keep-alive
+- Retrieve order używa PostmanRuntime/7.51.0 + force override
+- Logi pokazują rzeczywiste wysłane nagłówki ($headers)
+
+### Techniczne
+- Plik był zepsuty w repozytorium - przepisany od nowa
+- Wszystkie requesty do PayU używają spójnych nagłówków
+- Force override user-agent we wszystkich requestach
+
 ## [1.0.35] - 2024-03-11
 
 ### Poprawiono
