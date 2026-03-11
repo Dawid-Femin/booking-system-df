@@ -1,6 +1,19 @@
 # Changelog
 
-## [1.0.39] - 2024-03-11
+## [1.0.40] - 2026-03-11
+
+### Poprawiono
+- Typy danych w PayU API: totalAmount, unitPrice, quantity i merchantPosId wysyłane jako stringi (zgodnie z dokumentacją PayU)
+- Kwota refundu również jako string
+- To prawdopodobnie naprawia błąd "Coś poszło nie tak" na stronie płatności PayU
+
+### Techniczne
+- PayU dokumentacja wymaga stringów dla wartości liczbowych (np. "21000" zamiast 21000)
+- Zmieniono intval() na strval(intval()) dla kwot
+- merchantPosId opakowane w strval()
+- quantity zmienione z int 1 na string "1"
+
+## [1.0.39] - 2026-03-11
 
 ### Poprawiono
 - Przywrócono prawidłowy sandbox URL: secure.snd.payu.com (merch-prod to panel admina, nie API)

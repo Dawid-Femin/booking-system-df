@@ -154,13 +154,15 @@ class PayU_Gateway {
             
             $url = $this->get_api_url() . '/api/v2_1/orders';
             
+            $amount_in_grosze = strval(intval($amount * 100));
+            
             $order_data = array(
                 'notifyUrl' => home_url('/wp-json/booking-system-df/v1/payu-webhook'),
                 'customerIp' => $this->get_client_ip(),
-                'merchantPosId' => $this->pos_id,
+                'merchantPosId' => strval($this->pos_id),
                 'description' => $description,
                 'currencyCode' => $currency,
-                'totalAmount' => intval($amount * 100), // Convert to grosze
+                'totalAmount' => $amount_in_grosze,
                 'extOrderId' => 'consultation_' . $consultation_id . '_' . time(),
                 'buyer' => array(
                     'email' => $customer_email,
@@ -170,8 +172,8 @@ class PayU_Gateway {
                 'products' => array(
                     array(
                         'name' => $description,
-                        'unitPrice' => intval($amount * 100),
-                        'quantity' => 1
+                        'unitPrice' => $amount_in_grosze,
+                        'quantity' => '1'
                     )
                 ),
                 'continueUrl' => home_url('/wp-json/booking-system-df/v1/payment-return?consultation_id=' . $consultation_id)
@@ -460,7 +462,7 @@ class PayU_Gateway {
             
             $refund_data = array(
                 'description' => $description,
-                'amount' => intval($amount * 100)
+                'amount' => strval(intval($amount * 100))
             );
 
             $response = wp_remote_post($url, array(
