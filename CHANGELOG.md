@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.38] - 2024-03-11
+
+### Poprawiono
+- Zmieniono adres sandbox PayU na prawidłowy (merch-prod.snd.payu.com)
+
 ## [1.0.37] - 2024-03-11
 
 ### Poprawiono

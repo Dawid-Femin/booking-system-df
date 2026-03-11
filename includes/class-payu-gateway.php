@@ -57,7 +57,7 @@ class PayU_Gateway {
 
     private function get_api_url() {
         return $this->is_sandbox 
-            ? 'https://secure.snd.payu.com' 
+            ? 'https://merch-prod.snd.payu.com/' 
             : 'https://secure.payu.com';
     }
 
