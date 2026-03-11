@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.42] - 2026-03-11
+
+### Zmieniono
+- Przeprojektowano widok potwierdzenia rezerwacji [booking_confirmation]
+- Spójny design z formularzem rezerwacji: tło #f4faf5, border-radius 26px, czcionka Lora
+- Polskie nazwy dni i miesięcy w dacie rezerwacji
+- Karty z detalami rezerwacji w grid layout (2 kolumny)
+- Numerowane kroki "Co dalej?" z zielonymi kółkami
+- Ikony SVG zamiast emoji
+- Trzy warianty: sukces (zielony), oczekiwanie (żółty), błąd (czerwony)
+- Responsywny design na mobile
+- Usunięto inline styles — wszystko w public.css
+
 ## [1.0.41] - 2026-03-11
 
 ### Poprawiono
