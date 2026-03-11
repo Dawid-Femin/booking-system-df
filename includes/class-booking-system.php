@@ -57,6 +57,9 @@ class Booking_System {
         add_action('wp_enqueue_scripts', array($public, 'enqueue_styles'));
         add_action('wp_enqueue_scripts', array($public, 'enqueue_scripts'));
         
+        // Early form processing - redirect before any HTML output
+        add_action('template_redirect', array($public, 'handle_early_form_submission'));
+        
         // Register shortcodes
         add_shortcode('booking_calendar', array($public, 'booking_calendar_shortcode'));
         add_shortcode('booking_form', array($public, 'booking_form_shortcode'));

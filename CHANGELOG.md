@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.41] - 2026-03-11
+
+### Poprawiono
+- KRYTYCZNE: Zmieniono redirect do PayU z JavaScript (esc_js) na wp_redirect() na hooku template_redirect
+- Formularz jest teraz przetwarzany PRZED wysłaniem HTML — czysty HTTP 302 redirect do PayU
+- Eliminuje potencjalne problemy z escapowaniem URL-a PayU przez esc_js() i filtry WordPress
+- To prawdopodobnie naprawia błąd "nie możemy ustalić statusu transakcji" na stronie PayU
+
+### Techniczne
+- Dodano handle_early_form_submission() na hooku template_redirect
+- wp_redirect() wysyła czysty Location header bez modyfikacji URL-a
+- Usunięto JavaScript redirect z shortcode (echo script window.location.href)
+- Błędy formularza są przechowywane w property i wyświetlane w shortcode
+
 ## [1.0.40] - 2026-03-11
 
 ### Poprawiono

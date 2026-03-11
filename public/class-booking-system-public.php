@@ -10,6 +10,7 @@ class Booking_System_Public {
 
     private $plugin_name;
     private $version;
+    private $form_error = null;
 
     public function __construct($plugin_name, $version) {
         $this->plugin_name = $plugin_name;
@@ -64,6 +65,38 @@ class Booking_System_Public {
     }
 
     /**
+     * Handle form submission early (before HTML output) for clean redirect.
+     */
+    public function handle_early_form_submission() {
+        if (!isset($_POST['submit_booking'])) {
+            return;
+        }
+        
+        if (!isset($_POST['booking_nonce']) || !wp_verify_nonce($_POST['booking_nonce'], 'booking_form')) {
+            return;
+        }
+        
+        $result = $this->process_booking_form();
+        
+        if ($result->is_success()) {
+            $data = $result->get_data();
+            $redirect_url = $data['redirect_url'];
+            
+            Booking_System_Logger::log_info('Redirecting to PayU payment page', array(
+                'redirect_url' => $redirect_url,
+                'redirect_url_length' => strlen($redirect_url)
+            ));
+            
+            // Clean redirect - no HTML output yet, so wp_redirect works
+            wp_redirect($redirect_url);
+            exit;
+        }
+        
+        // On failure, store error for shortcode to display
+        $this->form_error = $result->get_error();
+    }
+
+    /**
      * Shortcode: [booking_form type_id="1"]
      */
     public function booking_form_shortcode($atts) {
@@ -83,19 +116,9 @@ class Booking_System_Public {
             return '<p>' . __('Nie znaleziono typu konsultacji.', 'booking-system-df') . '</p>';
         }
         
-        // Handle form submission
-        if (isset($_POST['submit_booking'])) {
-            $result = $this->process_booking_form();
-            
-            if ($result->is_success()) {
-                $data = $result->get_data();
-                // Use JavaScript redirect instead of wp_redirect to avoid headers already sent error
-                echo '<script>window.location.href = "' . esc_js($data['redirect_url']) . '";</script>';
-                echo '<p>' . __('Przekierowywanie do płatności...', 'booking-system-df') . '</p>';
-                return;
-            } else {
-                echo '<div class="booking-error">' . esc_html($result->get_error()) . '</div>';
-            }
+        // Show error from early form processing (if any)
+        if (isset($this->form_error) && $this->form_error) {
+            echo '<div class="booking-error">' . esc_html($this->form_error) . '</div>';
         }
         
         ob_start();
