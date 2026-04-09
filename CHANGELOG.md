@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.56] - 2026-04-10
+
+### Poprawiono
+- Font w "* Pola obowiązkowe" — jawny font-family zamiast inherit, identyczny z tekstem checkboxa
+
 ## [1.0.55] - 2026-04-10
 
 ### Zmieniono
