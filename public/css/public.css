@@ -698,3 +698,4 @@
 
 .required { color: red; }
 .required-note { font-size: 14px; color: #444; margin: 8px 0 0; line-height: 1.6; font-family: "Lora", Sans-serif; }
+.final-price-note { font-size: 14px; color: #444; margin: 0 0 12px; line-height: 1.6; font-family: "Lora", Sans-serif; }

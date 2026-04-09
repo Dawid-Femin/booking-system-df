@@ -176,6 +176,8 @@ if (!defined('ABSPATH')) exit;
                     </div>
                 </div>
                 
+                <p class="final-price-note"><?php _e('Cena końcowa:', 'booking-system-df'); ?> <?php echo esc_html($type->price . ' ' . $type->currency); ?></p>
+
                 <div class="form-group form-group-full">
                     <label class="checkbox-label">
                         <input type="checkbox" name="accept_terms" id="accept_terms" required>
@@ -193,7 +195,7 @@ if (!defined('ABSPATH')) exit;
                 <p class="required-note"><span class="required">*</span> <?php _e('Pola obowiązkowe', 'booking-system-df'); ?></p>
 
                 <button type="submit" name="submit_booking" class="button-primary">
-                    <?php _e('Rezerwuję i płacę', 'booking-system-df'); ?>
+                    <?php echo esc_html(sprintf(__('Rezerwuję i płacę - %s %s', 'booking-system-df'), $type->price, $type->currency)); ?>
                 </button>
             </div>
         <?php endif; ?>

@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.58] - 2026-04-10
+
+### Dodano
+- Kwota na przycisku "Rezerwuję i płacę - X PLN" pobierana dynamicznie z ustawień konsultacji
+- Informacja "Cena końcowa: X PLN" nad checkboxem akceptacji regulaminu
+
 ## [1.0.57] - 2026-04-10
 
 ### Poprawiono
