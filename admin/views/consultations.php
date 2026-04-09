@@ -12,7 +12,7 @@ $consultations = $wpdb->get_results("SELECT * FROM $table ORDER BY start_datetim
 <div class="wrap">
     <h1><?php _e('Konsultacje', 'booking-system-df'); ?></h1>
 
-    <form method="post">
+    <form method="post" action="<?php echo admin_url('admin.php?page=booking-consultations'); ?>">
         <?php wp_nonce_field('booking_bulk_action'); ?>
 
         <div class="tablenav top">

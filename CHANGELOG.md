@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.46] - 2026-04-09
+
+### Poprawiono
+- Akcje masowe w liście konsultacji — formularz wysyłał POST bez parametru `page=`, przez co handler nie był wywoływany i usuwanie nie działało
+
 ## [1.0.45] - 2026-04-09
 
 ### Dodano
