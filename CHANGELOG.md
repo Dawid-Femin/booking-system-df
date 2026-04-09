@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.51] - 2026-04-10
+
+### Zmieniono
+- Ikonę zegara zastąpiono etykietą "Czas trwania spotkania: X min"
+- Przed ceną dodano etykietę "Koszt spotkania:", cena pogrubiona
+
 ## [1.0.50] - 2026-04-10
 
 ### Zmieniono

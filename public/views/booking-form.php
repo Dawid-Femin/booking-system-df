@@ -11,13 +11,12 @@ if (!defined('ABSPATH')) exit;
         <p class="booking-description"><?php echo esc_html($type->description); ?></p>
         <div class="booking-meta">
             <span class="booking-duration">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                    <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM7 4v4.5l3.5 2 .5-.9-3-1.7V4H7z"/>
-                </svg>
+                <?php _e('Czas trwania spotkania:', 'booking-system-df'); ?>
                 <?php echo esc_html($type->duration_minutes); ?> min
             </span>
             <span class="booking-price">
-                <?php echo esc_html($type->price . ' ' . $type->currency); ?>
+                <?php _e('Koszt spotkania:', 'booking-system-df'); ?>
+                <strong><?php echo esc_html($type->price . ' ' . $type->currency); ?></strong>
             </span>
         </div>
     </div>
