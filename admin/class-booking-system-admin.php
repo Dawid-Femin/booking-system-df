@@ -263,6 +263,7 @@ class Booking_System_Admin {
             }
             
             echo '<div class="notice notice-success"><p>' . __('Grafik został zapisany.', 'booking-system-df') . '</p></div>';
+            self::purge_cache();
         }
         
         // Handle old form submissions (for backward compatibility)
@@ -338,5 +339,32 @@ class Booking_System_Admin {
         }
         
         include BOOKING_SYSTEM_DF_PLUGIN_DIR . 'admin/views/settings.php';
+    }
+
+    private static function purge_cache() {
+        // LiteSpeed Cache
+        if (class_exists('LiteSpeed_Cache_API')) {
+            LiteSpeed_Cache_API::purge_all();
+        } elseif (function_exists('litespeed_purge_all')) {
+            litespeed_purge_all();
+        }
+
+        // WP Rocket
+        if (function_exists('rocket_clean_domain')) {
+            rocket_clean_domain();
+        }
+
+        // W3 Total Cache
+        if (function_exists('w3tc_flush_all')) {
+            w3tc_flush_all();
+        }
+
+        // WP Super Cache
+        if (function_exists('wp_cache_clear_cache')) {
+            wp_cache_clear_cache();
+        }
+
+        // WordPress object cache
+        wp_cache_flush();
     }
 }
