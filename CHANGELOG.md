@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.57] - 2026-04-10
+
+### Poprawiono
+- Font "* Pola obowiązkowe" zmieniony na "Lora", Sans-serif
+
 ## [1.0.56] - 2026-04-10
 
 ### Poprawiono
