@@ -156,17 +156,17 @@ if (!defined('ABSPATH')) exit;
                 
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="patient_name"><?php _e('Imię i nazwisko', 'booking-system-df'); ?> *</label>
+                        <label for="patient_name"><?php _e('Imię i nazwisko', 'booking-system-df'); ?> <span class="required">*</span></label>
                         <input type="text" name="patient_name" id="patient_name" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="patient_email"><?php _e('Email', 'booking-system-df'); ?> *</label>
+                        <label for="patient_email"><?php _e('Email', 'booking-system-df'); ?> <span class="required">*</span></label>
                         <input type="email" name="patient_email" id="patient_email" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="patient_phone"><?php _e('Telefon', 'booking-system-df'); ?> *</label>
+                        <label for="patient_phone"><?php _e('Telefon', 'booking-system-df'); ?> <span class="required">*</span></label>
                         <input type="tel" name="patient_phone" id="patient_phone" required>
                     </div>
                     
@@ -186,10 +186,11 @@ if (!defined('ABSPATH')) exit;
                             <a href="<?php echo home_url('/polityka-prywatnosci'); ?>" target="_blank"><?php _e('Polityką Prywatności', 'booking-system-df'); ?></a>
                             <?php _e('oraz', 'booking-system-df'); ?>
                             <a href="<?php echo home_url('/polityka-zwrotow'); ?>" target="_blank"><?php _e('Polityką Zwrotów', 'booking-system-df'); ?></a>.
-                            <span style="color:red;">*</span>
+                            <span class="required">*</span>
                         </span>
                     </label>
                 </div>
+                <p class="required-note"><span class="required">*</span> <?php _e('Pola obowiązkowe', 'booking-system-df'); ?></p>
 
                 <button type="submit" name="submit_booking" class="button-primary">
                     <?php _e('Rezerwuję i płacę', 'booking-system-df'); ?>

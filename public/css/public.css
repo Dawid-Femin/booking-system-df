@@ -697,3 +697,6 @@
 .checkbox-label a:hover {
     color: #d3fece;
 }
+
+.required { color: red; }
+.required-note { font-size: 13px; color: #666; margin: 8px 0 0; }

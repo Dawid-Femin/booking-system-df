@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.54] - 2026-04-10
+
+### Zmieniono
+- Gwiazdki przy polach obowiązkowych (Imię, Email, Telefon) są teraz czerwone
+- Dodano notatkę "* Pola obowiązkowe" pod checkboxem z czerwoną gwiazdką
+
 ## [1.0.53] - 2026-04-10
 
 ### Zmieniono
