@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.53] - 2026-04-10
+
+### Zmieniono
+- Kolory checkboxa i linków dopasowane do palety strony (#c8fec2)
+- Usunięto pogrubienie z ceny przy "Koszt spotkania" — jednolity styl z "Czas trwania spotkania"
+
 ## [1.0.52] - 2026-04-10
 
 ### Zmieniono

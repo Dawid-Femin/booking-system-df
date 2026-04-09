@@ -683,17 +683,17 @@
     transition: background 0.2s, border-color 0.2s;
 }
 .checkbox-label input[type="checkbox"]:checked {
-    background: #4a9e6b;
-    border-color: #4a9e6b;
+    background: #c8fec2;
+    border-color: #c8fec2;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l3 3 5-6' stroke='%23fff' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 11px;
 }
 .checkbox-label a {
-    color: #4a9e6b;
+    color: #c8fec2;
     text-decoration: underline;
 }
 .checkbox-label a:hover {
-    color: #357a52;
+    color: #d3fece;
 }

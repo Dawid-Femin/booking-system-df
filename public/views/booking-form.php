@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) exit;
             </span>
             <span class="booking-price">
                 <?php _e('Koszt spotkania:', 'booking-system-df'); ?>
-                <strong><?php echo esc_html($type->price . ' ' . $type->currency); ?></strong>
+                <?php echo esc_html($type->price . ' ' . $type->currency); ?>
             </span>
         </div>
     </div>
