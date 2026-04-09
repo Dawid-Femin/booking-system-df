@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.50] - 2026-04-10
+
+### Zmieniono
+- Etykieta pola "Notatki (opcjonalnie)" na "Dodatkowe informacje (opcjonalnie)"
+- Tekst checkboxa na "Akceptuję Regulamin i potwierdzam, że zapoznałem/-am się z Polityką Prywatności oraz Polityką Zwrotów."
+- Styl checkboxa dopasowany do designu strony — zielony kolor, zaokrąglone rogi, animacja zaznaczenia
+
 ## [1.0.49] - 2026-04-10
 
 ### Dodano

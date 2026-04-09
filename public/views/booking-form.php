@@ -172,7 +172,7 @@ if (!defined('ABSPATH')) exit;
                     </div>
                     
                     <div class="form-group form-group-full">
-                        <label for="patient_notes"><?php _e('Notatki (opcjonalnie)', 'booking-system-df'); ?></label>
+                        <label for="patient_notes"><?php _e('Dodatkowe informacje (opcjonalnie)', 'booking-system-df'); ?></label>
                         <textarea name="patient_notes" id="patient_notes" rows="4" placeholder="<?php _e('Dodatkowe informacje...', 'booking-system-df'); ?>"></textarea>
                     </div>
                 </div>
@@ -184,8 +184,8 @@ if (!defined('ABSPATH')) exit;
                             <?php _e('Akceptuję', 'booking-system-df'); ?>
                             <a href="<?php echo home_url('/regulamin'); ?>" target="_blank"><?php _e('Regulamin', 'booking-system-df'); ?></a>
                             <?php _e('i potwierdzam, że zapoznałem/-am się z', 'booking-system-df'); ?>
-                            <a href="<?php echo home_url('/polityka-prywatnosci'); ?>" target="_blank"><?php _e('Polityką Prywatności', 'booking-system-df'); ?></a>.
-                            <?php _e('Zapoznałem/-am się również z', 'booking-system-df'); ?>
+                            <a href="<?php echo home_url('/polityka-prywatnosci'); ?>" target="_blank"><?php _e('Polityką Prywatności', 'booking-system-df'); ?></a>
+                            <?php _e('oraz', 'booking-system-df'); ?>
                             <a href="<?php echo home_url('/polityka-zwrotow'); ?>" target="_blank"><?php _e('Polityką Zwrotów', 'booking-system-df'); ?></a>.
                             <span style="color:red;">*</span>
                         </span>

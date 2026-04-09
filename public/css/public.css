@@ -662,15 +662,38 @@
 .checkbox-label {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
+    gap: 12px;
     cursor: pointer;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.6;
+    color: #444;
+    font-family: inherit;
 }
 .checkbox-label input[type="checkbox"] {
-    margin-top: 3px;
-    flex-shrink: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 2px solid #b5d5b5;
+    border-radius: 5px;
+    margin-top: 2px;
+    cursor: pointer;
+    background: #fff;
+    transition: background 0.2s, border-color 0.2s;
+}
+.checkbox-label input[type="checkbox"]:checked {
+    background: #4a9e6b;
+    border-color: #4a9e6b;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l3 3 5-6' stroke='%23fff' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 11px;
 }
 .checkbox-label a {
+    color: #4a9e6b;
     text-decoration: underline;
+}
+.checkbox-label a:hover {
+    color: #357a52;
 }
