@@ -177,6 +177,21 @@ if (!defined('ABSPATH')) exit;
                     </div>
                 </div>
                 
+                <div class="form-group form-group-full">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="accept_terms" id="accept_terms" required>
+                        <span>
+                            <?php _e('Akceptuję', 'booking-system-df'); ?>
+                            <a href="<?php echo home_url('/regulamin'); ?>" target="_blank"><?php _e('Regulamin', 'booking-system-df'); ?></a>
+                            <?php _e('i potwierdzam, że zapoznałem/-am się z', 'booking-system-df'); ?>
+                            <a href="<?php echo home_url('/polityka-prywatnosci'); ?>" target="_blank"><?php _e('Polityką Prywatności', 'booking-system-df'); ?></a>.
+                            <?php _e('Zapoznałem/-am się również z', 'booking-system-df'); ?>
+                            <a href="<?php echo home_url('/polityka-zwrotow'); ?>" target="_blank"><?php _e('Polityką Zwrotów', 'booking-system-df'); ?></a>.
+                            <span style="color:red;">*</span>
+                        </span>
+                    </label>
+                </div>
+
                 <button type="submit" name="submit_booking" class="button-primary">
                     <?php _e('Rezerwuję i płacę', 'booking-system-df'); ?>
                 </button>

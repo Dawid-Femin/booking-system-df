@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.49] - 2026-04-10
+
+### Dodano
+- Obowiązkowy checkbox akceptacji regulaminu w formularzu rezerwacji
+- Linki do Regulaminu (/regulamin), Polityki Prywatności (/polityka-prywatnosci) i Polityki Zwrotów (/polityka-zwrotow)
+- Czerwona gwiazdka przy checkboxie oznaczająca pole obowiązkowe
+
 ## [1.0.48] - 2026-04-09
 
 ### Zmieniono
