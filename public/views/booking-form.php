@@ -178,7 +178,7 @@ if (!defined('ABSPATH')) exit;
                 </div>
                 
                 <button type="submit" name="submit_booking" class="button-primary">
-                    <?php _e('Umów konsultację', 'booking-system-df'); ?>
+                    <?php _e('Rezerwuję i płacę', 'booking-system-df'); ?>
                 </button>
             </div>
         <?php endif; ?>

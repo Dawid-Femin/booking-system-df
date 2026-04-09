@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.48] - 2026-04-09
+
+### Zmieniono
+- Tekst przycisku w formularzu rezerwacji z "Umów konsultację" na "Rezerwuję i płacę"
+
 ## [1.0.47] - 2026-04-09
 
 ### Poprawiono
