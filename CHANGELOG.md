@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.59] - 2026-04-10
+
+### Poprawiono
+- Format ceny we wszystkich miejscach formularza — kropka zamieniona na przecinek (200,00 PLN)
+
 ## [1.0.58] - 2026-04-10
 
 ### Dodano
