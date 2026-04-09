@@ -98,6 +98,25 @@ class Booking_System_Admin {
     }
 
     public function display_consultations_page() {
+        // Handle bulk actions
+        if (isset($_POST['do_bulk_action']) && !empty($_POST['bulk_action'])) {
+            check_admin_referer('booking_bulk_action');
+
+            $ids = array_map('intval', isset($_POST['consultation_ids']) ? $_POST['consultation_ids'] : array());
+
+            if (!empty($ids) && $_POST['bulk_action'] === 'delete') {
+                global $wpdb;
+                $table = $wpdb->prefix . 'booking_consultations';
+                $placeholders = implode(',', array_fill(0, count($ids), '%d'));
+                $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE id IN ($placeholders)", $ids));
+
+                echo '<div class="notice notice-success"><p>' . sprintf(
+                    _n('Usunięto %d konsultację.', 'Usunięto %d konsultacje.', count($ids), 'booking-system-df'),
+                    count($ids)
+                ) . '</p></div>';
+            }
+        }
+
         // Handle edit action
         if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
             $consultation_id = intval($_GET['id']);
