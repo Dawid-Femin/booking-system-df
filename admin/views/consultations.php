@@ -68,7 +68,7 @@ $consultations = $wpdb->get_results("SELECT * FROM $table ORDER BY start_datetim
 
         <div class="tablenav bottom">
             <div class="alignleft actions bulkactions">
-                <select name="bulk_action">
+                <select name="bulk_action2">
                     <option value=""><?php _e('Akcje masowe', 'booking-system-df'); ?></option>
                     <option value="delete"><?php _e('Usuń', 'booking-system-df'); ?></option>
                 </select>

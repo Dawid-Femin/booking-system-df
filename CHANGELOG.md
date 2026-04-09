@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.47] - 2026-04-09
+
+### Poprawiono
+- Akcje masowe — dwa selecty `bulk_action` w jednym formularzu powodowały że PHP zawsze odczytywał wartość z górnego (pustą); dolny select ma teraz nazwę `bulk_action2`, handler sprawdza oba
+
 ## [1.0.46] - 2026-04-09
 
 ### Poprawiono
