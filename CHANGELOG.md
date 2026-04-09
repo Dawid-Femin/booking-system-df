@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.55] - 2026-04-10
+
+### Zmieniono
+- Linki w checkboxie — czarny kolor, pogrubione, hover ciemny szary (#444)
+- Ikona ptaszki w checkboxie zmieniona z białej na czarną
+- Notatkę "* Pola obowiązkowe" — ten sam font, kolor i rozmiar co tekst checkboxa
+- Usunięto wyróżnienie (kolor, pogrubienie, rozmiar) z "Koszt spotkania" — jednolity styl z "Czas trwania spotkania"
+
 ## [1.0.54] - 2026-04-10
 
 ### Zmieniono

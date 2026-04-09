@@ -77,9 +77,6 @@
 }
 
 .booking-price {
-    color: #7fb069;
-    font-weight: 600;
-    font-size: 18px;
 }
 
 /* Steps */
@@ -685,18 +682,19 @@
 .checkbox-label input[type="checkbox"]:checked {
     background: #c8fec2;
     border-color: #c8fec2;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l3 3 5-6' stroke='%23fff' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l3 3 5-6' stroke='%23000' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 11px;
 }
 .checkbox-label a {
-    color: #c8fec2;
+    color: #000;
+    font-weight: 700;
     text-decoration: underline;
 }
 .checkbox-label a:hover {
-    color: #d3fece;
+    color: #444;
 }
 
 .required { color: red; }
-.required-note { font-size: 13px; color: #666; margin: 8px 0 0; }
+.required-note { font-size: 14px; color: #444; margin: 8px 0 0; line-height: 1.6; font-family: inherit; }
