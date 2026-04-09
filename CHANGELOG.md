@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.52] - 2026-04-10
+
+### Zmieniono
+- Usunięto efekt przesunięcia (translateY) z hover buttona
+- Dodano margines górny 16px od checkboxa
+
 ## [1.0.51] - 2026-04-10
 
 ### Zmieniono
