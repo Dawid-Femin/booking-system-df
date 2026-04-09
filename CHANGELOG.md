@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.0.45] - 2026-04-09
+
+### Dodano
+- Automatyczne czyszczenie cache po zapisaniu grafiku dostępności
+- Obsługa LiteSpeed Cache, WP Rocket, W3 Total Cache, WP Super Cache
+- Nowe terminy są widoczne natychmiast po zapisaniu bez ręcznego czyszczenia cache
+
+## [1.0.44] - 2026-04-09
+
+### Dodano
+- Akcje masowe w liście konsultacji (wzorowane na standardowym WP)
+- Checkboxy przy każdej konsultacji oraz "zaznacz wszystkie" w nagłówku
+- Dropdown "Akcje masowe → Usuń" na górze i dole tabeli
+
+## [1.0.43] - 2026-04-09
+
+### Dodano
+- Możliwość edycji konsultacji z poziomu panelu admina
+- Formularz edycji: typ konsultacji, data/godzina, status, dane pacjenta
+- Zmiana terminu na konsultacji ze statusem "Potwierdzona" automatycznie aktualizuje event w Google Calendar
+- Email do pacjenta z nowym terminem po zmianie daty/godziny
+- Przycisk "Edytuj" przy każdej konsultacji w liście
+
 ## [1.0.42] - 2026-03-11
 
 ### Zmieniono
