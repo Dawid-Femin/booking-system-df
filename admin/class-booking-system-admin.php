@@ -98,10 +98,39 @@ class Booking_System_Admin {
     }
 
     public function display_consultations_page() {
-        // Handle actions
+        // Handle edit action
+        if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
+            $consultation_id = intval($_GET['id']);
+
+            if (isset($_POST['save_consultation'])) {
+                check_admin_referer('booking_edit_consultation_' . $consultation_id);
+
+                $result = Booking_Engine::update_consultation($consultation_id, array(
+                    'consultation_type_id' => intval($_POST['consultation_type_id']),
+                    'start_datetime'       => sanitize_text_field(str_replace('T', ' ', $_POST['start_datetime'])),
+                    'end_datetime'         => sanitize_text_field(str_replace('T', ' ', $_POST['end_datetime'])),
+                    'status'               => sanitize_text_field($_POST['status']),
+                    'patient_name'         => sanitize_text_field($_POST['patient_name']),
+                    'patient_email'        => sanitize_email($_POST['patient_email']),
+                    'patient_phone'        => sanitize_text_field($_POST['patient_phone']),
+                    'patient_notes'        => sanitize_textarea_field($_POST['patient_notes']),
+                ));
+
+                if ($result->is_success()) {
+                    echo '<div class="notice notice-success"><p>' . __('Konsultacja została zaktualizowana.', 'booking-system-df') . '</p></div>';
+                } else {
+                    echo '<div class="notice notice-error"><p>' . esc_html($result->get_error()) . '</p></div>';
+                }
+            }
+
+            include BOOKING_SYSTEM_DF_PLUGIN_DIR . 'admin/views/edit-consultation.php';
+            return;
+        }
+
+        // Handle other actions
         if (isset($_GET['action']) && isset($_GET['id'])) {
             $consultation_id = intval($_GET['id']);
-            
+
             switch ($_GET['action']) {
                 case 'confirm':
                     $result = Booking_Engine::confirm_consultation($consultation_id);
@@ -111,7 +140,7 @@ class Booking_System_Admin {
                         echo '<div class="notice notice-error"><p>' . esc_html($result->get_error()) . '</p></div>';
                     }
                     break;
-                    
+
                 case 'cancel':
                     $reason = isset($_POST['reason']) ? sanitize_textarea_field($_POST['reason']) : '';
                     $result = Booking_Engine::cancel_consultation($consultation_id, $reason);
@@ -123,7 +152,7 @@ class Booking_System_Admin {
                     break;
             }
         }
-        
+
         include BOOKING_SYSTEM_DF_PLUGIN_DIR . 'admin/views/consultations.php';
     }
 

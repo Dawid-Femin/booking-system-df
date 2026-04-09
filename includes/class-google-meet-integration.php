@@ -187,6 +187,47 @@ class Google_Meet_Integration {
         ));
     }
 
+    public function update_meeting($event_id, $consultation) {
+        try {
+            $token = $this->get_access_token();
+
+            $type  = Consultation_Type::get_by_id($consultation->consultation_type_id);
+            $start = new DateTime($consultation->start_datetime, new DateTimeZone('Europe/Warsaw'));
+            $end   = new DateTime($consultation->end_datetime,   new DateTimeZone('Europe/Warsaw'));
+
+            $event_data = array(
+                'summary' => $type->name . ' - ' . $consultation->patient_data->name,
+                'start'   => array('dateTime' => $start->format('c'), 'timeZone' => 'Europe/Warsaw'),
+                'end'     => array('dateTime' => $end->format('c'),   'timeZone' => 'Europe/Warsaw'),
+            );
+
+            $url = 'https://www.googleapis.com/calendar/v3/calendars/primary/events/' . urlencode($event_id);
+
+            $response = wp_remote_request($url, array(
+                'method'  => 'PATCH',
+                'headers' => array(
+                    'Authorization' => 'Bearer ' . $token,
+                    'Content-Type'  => 'application/json'
+                ),
+                'body'    => json_encode($event_data),
+                'timeout' => 30
+            ));
+
+            if (is_wp_error($response)) {
+                Booking_System_Logger::log_error('Google Meet update failed: ' . $response->get_error_message());
+                return Result::failure('Nie udało się zaktualizować spotkania Google Meet.');
+            }
+
+            Booking_System_Logger::log_info('Google Meet updated', array('event_id' => $event_id));
+
+            return Result::success();
+
+        } catch (Exception $e) {
+            Booking_System_Logger::log_error('Google Meet update exception: ' . $e->getMessage());
+            return Result::failure($e->getMessage());
+        }
+    }
+
     public function delete_meeting($event_id) {
         try {
             $token = $this->get_access_token();

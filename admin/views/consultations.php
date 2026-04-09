@@ -38,6 +38,9 @@ $consultations = $wpdb->get_results("SELECT * FROM $table ORDER BY start_datetim
                                 <?php _e('Potwierdź', 'booking-system-df'); ?>
                             </a>
                         <?php endif; ?>
+                        <a href="?page=booking-consultations&action=edit&id=<?php echo $consultation->id; ?>" class="button">
+                            <?php _e('Edytuj', 'booking-system-df'); ?>
+                        </a>
                     </td>
                 </tr>
             <?php endforeach; ?>

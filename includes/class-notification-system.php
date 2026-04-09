@@ -108,6 +108,24 @@ class Notification_System {
         return wp_mail($consultation->patient_data->email, $subject, $message);
     }
 
+    public static function send_reschedule_notice($consultation) {
+        $subject = __('Zmiana terminu konsultacji', 'booking-system-df');
+
+        $type  = Consultation_Type::get_by_id($consultation->consultation_type_id);
+        $start = new DateTime($consultation->start_datetime, new DateTimeZone('Europe/Warsaw'));
+
+        $message = sprintf(
+            __("Dzień dobry %s,\n\nInformujemy, że termin Twojej konsultacji został zmieniony.\n\nNowe szczegóły:\n- Typ: %s\n- Data: %s\n- Godzina: %s\n\nLink do spotkania Google Meet (bez zmian):\n%s\n\nPozdrawiamy,\nZespół", 'booking-system-df'),
+            $consultation->patient_data->name,
+            $type->name,
+            $start->format('d.m.Y'),
+            $start->format('H:i'),
+            $consultation->google_meet_link
+        );
+
+        return wp_mail($consultation->patient_data->email, $subject, $message);
+    }
+
     public static function send_admin_new_consultation($consultation) {
         $admin_email = get_option('admin_email');
         $subject = __('Nowa konsultacja oczekuje na potwierdzenie', 'booking-system-df');

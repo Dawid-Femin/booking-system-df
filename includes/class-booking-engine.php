@@ -239,6 +239,45 @@ class Booking_Engine {
         return Result::success();
     }
 
+    public static function update_consultation($consultation_id, $data) {
+        $consultation = Consultation::get_by_id($consultation_id);
+
+        if (!$consultation) {
+            return Result::failure(__('Nie znaleziono konsultacji.', 'booking-system-df'));
+        }
+
+        $old_start = $consultation->start_datetime;
+        $old_end   = $consultation->end_datetime;
+
+        $consultation->consultation_type_id      = intval($data['consultation_type_id']);
+        $consultation->start_datetime            = $data['start_datetime'];
+        $consultation->end_datetime              = $data['end_datetime'];
+        $consultation->status                    = $data['status'];
+        $consultation->patient_data->name        = $data['patient_name'];
+        $consultation->patient_data->email       = $data['patient_email'];
+        $consultation->patient_data->phone       = $data['patient_phone'];
+        $consultation->patient_data->notes       = $data['patient_notes'];
+
+        $consultation->save();
+
+        // If datetime changed and Google Meet exists — update event and notify patient
+        $datetime_changed = ($consultation->start_datetime !== $old_start || $consultation->end_datetime !== $old_end);
+
+        if ($datetime_changed && $consultation->google_meet_event_id) {
+            $google_meet = new Google_Meet_Integration();
+            $google_meet->update_meeting($consultation->google_meet_event_id, $consultation);
+
+            Notification_System::send_reschedule_notice($consultation);
+        }
+
+        Booking_System_Logger::log_info('Consultation updated', array(
+            'consultation_id' => $consultation_id,
+            'datetime_changed' => $datetime_changed
+        ));
+
+        return Result::success();
+    }
+
     public static function mark_as_completed($consultation_id) {
         $consultation = Consultation::get_by_id($consultation_id);
         
