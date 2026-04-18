@@ -3,7 +3,7 @@
  * Plugin Name: System Rezerwacji Konsultacji DF
  * Plugin URI: https://dawidfemin.pl/booking-system
  * Description: System rezerwacji konsultacji psychologicznych z integracją PayU i Google Meet
- * Version: 1.0.59
+ * Version: 1.0.60
  * Author: Dawid Femin
  * Author URI: https://dawidfemin.pl
  * License: GPL-2.0+
@@ -20,7 +20,7 @@ if (!defined('WPINC')) {
 /**
  * Currently plugin version.
  */
-define('BOOKING_SYSTEM_DF_VERSION', '1.0.59');
+define('BOOKING_SYSTEM_DF_VERSION', '1.0.60');
 define('BOOKING_SYSTEM_DF_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('BOOKING_SYSTEM_DF_PLUGIN_URL', plugin_dir_url(__FILE__));
 

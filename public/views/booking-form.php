@@ -178,6 +178,8 @@ if (!defined('ABSPATH')) exit;
                 
                 <p class="final-price-note"><?php _e('Cena końcowa:', 'booking-system-df'); ?> <?php echo esc_html(number_format($type->price, 2, ',', '') . ' ' . $type->currency); ?></p>
 
+                <p class="final-price-note"><?php _e('Wizytę można bezpłatnie odwołać lub przełożyć najpóźniej 24 godziny przed terminem. Późniejsze odwołanie lub niepojawienie się oznacza brak zwrotu opłaty.', 'booking-system-df'); ?></p>
+
                 <div class="form-group form-group-full">
                     <label class="checkbox-label">
                         <input type="checkbox" name="accept_terms" id="accept_terms" required>

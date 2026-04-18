@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.60] - 2026-04-18
+
+### Dodano
+- Informacja o polityce odwołań wizyty pod ceną końcową w formularzu rezerwacji
+
 ## [1.0.59] - 2026-04-10
 
 ### Poprawiono
